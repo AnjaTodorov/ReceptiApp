@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepti</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="sliki/slika36.png" width="150px">
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Domov</a></li>
+                    <li><a href="">O nas</a></li>
+                    <li><a href="recepti.html">Recepti</a></li>
+                    <a href="#" id="openModalBtn" style="display: inline-block; background: #41b816; color: #ffffffc1; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s;" class="btn">Dodaj Recept</a></li>
+                   
+                </ul>
+            </nav>
+            <div id="searchContainer">
+                <input type="text" id="searchBar" placeholder="Išči recept">
+                <button type="button" id="searchButton">
+                    <i class="fas fa-search" style="color: white;"></i>
+                </button>
+            </div>
+
+            <img src="sliki/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+</div>
+
+<!-- Recipe List Container -->
+<!---<div class="recepti-list"></div>---->
+<div class="container">
+    <div class="row" id="recipeCards"></div>
+</div>
+
+<!-- Modal for adding new recipes -->
+<div id="recipeModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Dodaj Recept</h2>
+        <form id="recipeForm" enctype="multipart/form-data">
+            <label for="naziv">Naziv:</label>
+            <input type="text" id="naziv" name="naziv" required>
+        
+            <label for="picture">Dodaj Slika:</label>
+            <input type="file" id="picture" name="picture" accept="image/*" required>
+        
+            <label for="ingredients">Sastojci:</label>
+            <textarea id="ingredients" name="sestavine" rows="4" required></textarea>
+        
+            <label for="description">Opis:</label>
+            <textarea id="description" name="opis" rows="4" required></textarea>
+        
+            <button type="submit">Dodaj</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal for updating recipes -->
+<div id="updateModal" class="modal1">
+    <div class="modal-content1">
+        <span class="close" id="updateClose">&times;</span>
+        <h2>Uredi Recept</h2>
+        <input type="hidden" id="updateId">
+        
+        <label for="updateNaziv">Naziv:</label>
+        <input type="text" id="updateNaziv" name="updateNaziv" required>
+
+        <label for="updateSestavine">Sestavine:</label> 
+        <textarea id="updateSestavine" name="updateSestavine" rows="4" required></textarea>
+
+        <label for="updateOpis">Opis:</label>
+        <textarea id="updateOpis" name="updateOpis" rows="4" required></textarea>
+
+        <button type="button" onclick="updateRecept(document.getElementById('updateId').value)">Shrani spremembe</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
