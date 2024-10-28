@@ -19,7 +19,9 @@ public class ReceptiController {
     @Autowired
     private ReceptiRepository receptiRepository;
 
+
     String uploadDir = "C:/Users/anjat/Desktop/RIS/Recepti/frontend/sliki/";
+
 
     @GetMapping
     public List<Recepti> getAllRecepti() {
