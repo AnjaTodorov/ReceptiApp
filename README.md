@@ -15,13 +15,15 @@
 - 📄 [Pregled](#pregled)
 - ⭐ [Značilnosti](#značilnosti)
 - ⚙️ [Tehnološki sklad](#tehnološki-sklad)
+- 📁 [Struktura projekta](#struktura-projekta)
 - 📌 [Prvi koraki](#prvi-koraki)
 - ▶️ [Zagon aplikacije](#zagon-aplikacije)
 - 👤 [Avtorji](#avtorji)
-  
+- 📜 [Licenca](#licenca)
+ 
 ## 📄 Pregled
 
-Ta projekt ponuja preprost in intuitiven vmesnik za uporabnike, da dodajo, uredijo, posodobijo in izbrišejo svoje najljubše recepte. Ustvarite svoj osebni kuharski arhiv in ga prilagodite po svojih željah. Vaši recepti, vaša pravila – vse na enem mestu, varno shranjeno in dostopno kadarkoli. Zgrajena z uporabo SpringBoot backend-a in sodobnega frontend okvira, je aplikacija zasnovana za enostavno upravljanje receptov in prilagodljive posodobitve. 
+Ta projekt ponuja preprost in intuitiven vmesnik za uporabnike, da dodajo, uredijo, posodobijo in izbrišejo svoje najljubše recepte. Ustvarite svoj osebni kuharski arhiv in ga prilagodite po svojih željah. Vaši recepti, vaša pravila – vse na enem mestu, varno shranjeno in dostopno kadarkoli. Zgrajena z uporabo SpringBoot backend-a in sodobnega frontend okvira, je aplikacija zasnovana za enostavno upravljanje receptov in prilagodljive posodobitve.
 
 ## ⭐  Značilnosti
 
@@ -52,6 +54,60 @@ Ta projekt ponuja preprost in intuitiven vmesnik za uporabnike, da dodajo, uredi
   </p>
 - **Implementacija**: Lokalni strežnik
 
+## Struktura projekta
+
+```bash
+project-root/
+│
+├── .idea/                                      # IDE nastavitve (npr. za IntelliJ)
+│   └── *                                       # Vsebuje nastavitve specifične za projekt, workspace.xml, itd.
+│
+├── .mvn/                                       # Maven wrapper datoteke za upravljanje odvisnosti
+│   ├── wrapper/
+│   │   ├── maven-wrapper.jar                   # Maven wrapper za odvisnosti
+│   │   └── maven-wrapper.properties            # Lastnosti za Maven wrapper
+│
+├── backend/                                    # Backend mapa (Spring Boot)
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/RIS/Mojirecepti/        # Osnovni paket
+│   │   │   │       ├── controller/             # REST API kontrolerji
+│   │   │   │       │   └── ReceptiController.java # Kontroler za obdelavo zahtevkov za recepte
+│   │   │   │       ├── entity/                 # Entitetne (DB) razrede
+│   │   │   │       │   └── Recepti.java        # Entiteta za recept
+│   │   │   │       ├── repository/             # Repozitoriji za dostop do podatkov
+│   │   │   │       │   └── ReceptiRepository.java # Repozitorij za entitete receptov
+│   │   │   │       ├── config/                 # Konfiguracijski razredi
+│   │   │   │       │   └── WebConfig.java      # Web nastavitve (npr. CORS)
+│   │   │   │       ├── Hello.java              # Testni razred
+│   │   │   │       └── MojiReceptiApplication.java # Glavni razred za Spring Boot aplikacijo
+│   │   │   └── resources/
+│   │   │       └── application.properties      # Konfiguracija aplikacije (npr. DB povezava)
+│   │   └── test/                               # Testni razredi za backend
+│   ├── pom.xml                                 # Maven odvisnosti in konfiguracija za gradnjo
+│
+├── frontend/                                   # Mapa za frontend (odjemalska koda)
+│   ├── app.js                                  # Glavni JavaScript datoteka za frontend logiko
+│   ├── index.html                              # Glavna HTML stran (domov)
+│   ├── recepti.html                            # HTML stran za prikaz in upravljanje receptov
+│   ├── style.css                               # CSS za stilizacijo frontend-a
+│   ├── sliki/                                  # Mapa za slike v frontend-u
+│
+├── node_modules/                               # Node.js odvisnosti (samodejno generirane s npm)
+│   └── *                                       # Vsebuje vse nameščene pakete za Node.js
+│
+├── .gitignore                                  # Datoteke, ki jih Git ignorira
+├── mvnw                                        # Maven wrapper skripta (Linux/Mac)
+├── mvnw.cmd                                    # Maven wrapper skripta (Windows)
+├── package-lock.json                           # Zaklenjena datoteka za Node.js odvisnosti (samodejno generirano s npm)
+├── package.json                                # Node.js odvisnosti in skripte za frontend
+├── README.md                                   # Dokumentacija projekta
+└──  server.js                                   # Node.js strežnik za zagon frontend-a
+
+
+```
+
 ## 📌 Prvi koraki
 
 Za lokalno kopijo in zagon sledite tem preprostim korakom.
@@ -73,6 +129,44 @@ Poskrbite, da imate nameščeno naslednje:
 git clone https://github.com/AnjaTodorov/ReceptiApp.git
 cd ReceptiApp
 ```
+### Namestitev MySQL Workbench
+
+1. Pojdite na [MySQL Workbench Download Page](https://dev.mysql.com/downloads/workbench/).
+2. Izberite ustrezno različico za vaš operacijski sistem in sledite navodilom za namestitev.
+
+### Nastavitev baze podatkov
+
+1. Odprite MySQL Workbench in se povežite na vašo lokalno bazo podatkov.
+2. Za ustvarjanje baze podatkov za aplikacijo zaženite naslednje ukaze:
+
+```sql
+DROP DATABASE IF EXISTS ReceptiDB;
+CREATE DATABASE ReceptiDB;
+USE ReceptiDB;
+
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS Recepti;
+
+CREATE TABLE Recepti (
+    idRecepti INT AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(40) NOT NULL,
+    slika VARCHAR(100) NOT NULL,
+    sestavine TEXT NOT NULL,
+    opis TEXT NOT NULL
+);
+```
+### Povezava Spring Boot z MySQL
+V vaši aplikaciji dodajte naslednje nastavitve v datoteko application.properties:
+```bash
+spring.application.name=Moji-recepti
+spring.datasource.url=jdbc:mysql://localhost:3306/ReceptiDB
+spring.datasource.username=root
+spring.datasource.password= # Spremenite na vaš dejanski geslo
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+```
 ## ▶️ Zagon aplikacije
 
 ### Zagon backend-a
@@ -81,7 +175,7 @@ Pojdite v mapo backend:
 ```bash
 cd backend
 ```
-Začnite backend 
+Začnite backend
 ```bash
 mvn spring-boot:run
 ```
@@ -97,3 +191,8 @@ node server.js
 - Matej Filipov
 - Anastasija Todorov
 - Konstantin Mihajlov
+
+## 📜 Licenca
+
+Ta projekt trenutno ni licenciran. Za prihodnje spremembe licenciranja spremljajte ta repozitorij.  
+Prispevki so dobrodošli, vendar upoštevajte, da se lahko pravice uporabe spremenijo s prihodnjimi licencami.
