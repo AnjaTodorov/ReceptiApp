@@ -19,6 +19,8 @@
 - ⭐ [Značilnosti](#značilnosti)
 - ⚙️ [Tehnološki sklad](#tehnološki-sklad)
 - 📁 [Struktura projekta](#struktura-projekta)
+- 📏 [Standardi kodiranja](#standardi-kodiranja)
+- 🌐 [Končne točke REST API](#končne-točke-REST-API)
 - 📌 [Prvi koraki](#prvi-koraki)
 - ▶️ [Zagon aplikacije](#zagon-aplikacije)
 - 👤 [Avtorji](#avtorji)
@@ -76,12 +78,6 @@ V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen 
             <td>Struktura, kjer so shranjeni podatki o receptih in uporabnikih.</td>
             <td>Podatki morajo biti organizirani in enostavno dostopni.</td>
             <td>MySQL baza, ki hrani informacije o vseh receptih.</td>
-        </tr>
-        <tr>
-            <td>Funkcionalnosti</td>
-            <td>In/ali vloge uporabnikov kot stranski produkt.</td>
-            <td>Funkcionalnosti morajo biti jasno opredeljene in razdeljene po vlogah uporabnikov.</td>
-            <td>Možnost iskanja receptov po naziv.</td>
         </tr>
     </tbody>
 </table>
@@ -176,6 +172,43 @@ project-root/
 
 
 ```
+
+## 📏 Standardi kodiranja
+
+Pri razvoju aplikacije "Moji recepti" upoštevamo določene standarde kodiranja, da zagotovimo berljivost, vzdržljivost in kakovost kode. Ti standardi vključujejo:
+
+1. **Imenovanje spremenljivk in funkcij**:
+   - Uporabljajte opisna imena, ki jasno označujejo namen spremenljivke ali funkcije.
+   - Uporabite konvencije imenovanja (camelCase za spremenljivke in funkcije, PascalCase za razrede).
+
+2. **Komentiranje kode**:
+   - Dodajte komentarje, kjer je to potrebno, da pojasnite zapletene dele kode.
+
+3. **Struktura kode**:
+   - Organizirajte kodo v logične enote in mape (npr. po funkcionalnostih).
+
+4. **Preverjanje napak**:
+   - Implementirajte ustrezno obravnavo napak in izjem.
+   - Uporabite enote testiranja za preverjanje funkcionalnosti kode.
+
+5. **Verzijski nadzor**:
+   - Redno posodabljajte in dokumentirajte spremembe v Git repozitoriju.
+   - Uporabljajte smiselne sporočila za commit.
+
+Z upoštevanjem teh standardov kodiranja želimo olajšati sodelovanje v projektu in zagotavljati visoko kakovost programske opreme.
+
+## 🌐 Končne točke REST API
+
+| **Končna točka**         | **Metoda** | **Opis**                                    | **Odgovor**                                                                                           |
+|--------------------------|------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `/recepti`               | GET        | Pridobi seznam vseh receptov               | Vrne seznam receptov v JSON formatu, kjer vsak vsebuje `id`, `naziv`, `slika`, `sestavine` in `opis`. |
+| `/recepti/{id}`          | GET        | Pridobi recept po ID-ju                    | Vrne podrobnosti recepta v JSON formatu (`id`, `naziv`, `slika`, `sestavine`, `opis`) za določen `id`. |
+| `/recepti`               | POST       | Ustvari nov recept                         | Vrne ustvarjeni recept z dodeljenim `id`, ali sporočilo o napaki, če ustvarjanje ni uspešno.          |
+| `/recepti/{id}`          | PUT        | Posodobi obstoječi recept po ID-ju         | Vrne posodobljeni recept, če je uspešno, ali sporočilo o napaki, če recept z določenim `id` ne obstaja. |
+| `/recepti/{id}`          | DELETE     | Izbriše recept po ID-ju                    | Vrne sporočilo o uspehu, če je brisanje uspešno, ali sporočilo o napaki, če recept z določenim `id` ne obstaja. |
+
+
+
 
 ## 📌 Prvi koraki
 
