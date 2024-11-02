@@ -13,6 +13,9 @@
 ## Kazalo vsebine
 
 - 📄 [Pregled](#pregled)
+- 🌟 [Vizija](#vizija)
+- 📚 [Besednjak](#besednjak)
+- ✏️ [DPU](#dpu)
 - ⭐ [Značilnosti](#značilnosti)
 - ⚙️ [Tehnološki sklad](#tehnološki-sklad)
 - 📁 [Struktura projekta](#struktura-projekta)
@@ -24,6 +27,72 @@
 ## 📄 Pregled
 
 Ta projekt ponuja preprost in intuitiven vmesnik za uporabnike, da dodajo, uredijo, posodobijo in izbrišejo svoje najljubše recepte. Ustvarite svoj osebni kuharski arhiv in ga prilagodite po svojih željah. Vaši recepti, vaša pravila – vse na enem mestu, varno shranjeno in dostopno kadarkoli. Zgrajena z uporabo SpringBoot backend-a in sodobnega frontend okvira, je aplikacija zasnovana za enostavno upravljanje receptov in prilagodljive posodobitve.
+
+## 🌟 Vizija
+Vizija projekta "Moji recepti" je ustvariti intuitivno in dostopno spletno aplikacijo, ki uporabnikom omogoča enostavno shranjevanje in organiziranje njihovih najljubših receptov. Namen aplikacije je olajšati uporabnikom iskanje, ustvarjanje in upravljanje lastnih receptov, kar jim omogoča, da razvijajo svoje kuharske veščine in se povezujejo s skupnostjo ljubiteljev hrane. Aplikacija je namenjena vsem, ki želijo imeti svoje recepte na enem mestu, ne glede na raven kuharskih izkušenj.
+
+S "Moji recepti" želimo izboljšati uporabniško izkušnjo s funkcionalnostmi, kot so dodajanje fotografij, izbira sestavin in enostavno upravljanje receptov. Poleg tega želimo da aplikacija omogoča razvrščanje obrokov v kategorije, kot so zajtrk, kosilo, večerja in pijače, kar uporabnikom pomaga hitreje in učinkoviteje pripravljati obroke.
+
+## 📚 Besednjak
+
+V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen besednjaka je zagotoviti razumevanje specifičnih izrazov in konceptov, ki so pomembni za pravilno rabo aplikacije. Vsak izraz je opremljen z definicijo, smernicami in primerom, da bi uporabnikom olajšali razumevanje funkcionalnosti in vloge posameznih komponent.
+
+<table>
+    <thead>
+        <tr>
+            <th>Izraz</th>
+            <th>Definicija</th>
+            <th>Smernice</th>
+            <th>Primer</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Recept</td>
+            <td>Navodila za pripravo jedi, ki vključuje seznam sestavin in postopke.</td>
+            <td>Recepti morajo biti jasni in enostavni za sledenje.</td>
+            <td>Piščančji curry z zelenjavnim rižem.</td>
+        </tr>
+        <tr>
+            <td>Sestavine</td>
+            <td>Podatki o vseh potrebnih elementih za pripravo recepta.</td>
+            <td>Vsak recept mora imeti seznam sestavin, ki so natančno navedene.</td>
+            <td>Piščanec, riž, curry pasta, zelenjava.</td>
+        </tr>
+        <tr>
+            <td>Uporabniški vmesnik</td>
+            <td>Del aplikacije, s katerim uporabnik komunicira za dodajanje, urejanje in iskanje receptov.</td>
+            <td>Vmesnik naj bo intuitiven in enostaven za navigacijo.</td>
+            <td>Oblika za dodajanje novega recepta z možnostjo nalaganja slike.</td>
+        </tr>
+        <tr>
+            <td>CRUD operacije</td>
+            <td>Osnovne operacije za ustvarjanje, branje, posodabljanje in brisanje podatkov.</td>
+            <td>Vsaka aplikacija mora omogočati te operacije za učinkovito upravljanje podatkov.</td>
+            <td>Dodajanje novega recepta, urejanje obstoječega recepta.</td>
+        </tr>
+        <tr>
+            <td>Baza podatkov</td>
+            <td>Struktura, kjer so shranjeni podatki o receptih in uporabnikih.</td>
+            <td>Podatki morajo biti organizirani in enostavno dostopni.</td>
+            <td>MySQL baza, ki hrani informacije o vseh receptih.</td>
+        </tr>
+        <tr>
+            <td>Funkcionalnosti</td>
+            <td>In/ali vloge uporabnikov kot stranski produkt.</td>
+            <td>Funkcionalnosti morajo biti jasno opredeljene in razdeljene po vlogah uporabnikov.</td>
+            <td>Možnost iskanja receptov po naziv.</td>
+        </tr>
+    </tbody>
+</table>
+
+## ✏️ DPU
+Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša aplikacija, in prikazuje, kako uporabniki lahko dodajajo, brišejo in urejajo recepte. Z opredelitvijo različnih primerov uporabe lahko bolje razumemo zahteve sistema in zagotovimo, da učinkovito zadostuje potrebam uporabnikov. Ta dokument si prizadeva ilustrirati diagram primerov uporabe ter podrobno opisati udeležence, njihove cilje in ustrezne primere uporabe, ki prispevajo k celotni funkcionalnosti "Moji recepti."
+
+
+
+![DPU](https://github.com/user-attachments/assets/94b2d8a3-edcb-4f4d-935f-b3e2f520537a)
+
 
 ## ⭐  Značilnosti
 
