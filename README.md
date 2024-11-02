@@ -54,7 +54,7 @@ Ta projekt ponuja preprost in intuitiven vmesnik za uporabnike, da dodajo, uredi
   </p>
 - **Implementacija**: Lokalni strežnik
 
-## Struktura projekta
+## 📁 Struktura projekta
 
 ```bash
 project-root/
