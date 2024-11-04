@@ -83,8 +83,70 @@ V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen 
 </table>
 
 ## ✏️ DPU
-Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša aplikacija, in prikazuje, kako uporabniki lahko dodajajo, brišejo in urejajo recepte. Z opredelitvijo različnih primerov uporabe lahko bolje razumemo zahteve sistema in zagotovimo, da učinkovito zadostuje potrebam uporabnikov. Ta dokument si prizadeva ilustrirati diagram primerov uporabe ter podrobno opisati udeležence, njihove cilje in ustrezne primere uporabe, ki prispevajo k celotni funkcionalnosti "Moji recepti."
+<h3>Naziv: Moji Recepti </h3>
 
+<h3>Vloge:</h3>
+<ul>
+  <li><strong>Uporabnik</strong>: Predstavlja glavnega uporabnika, ki uporablja sistem "Moji Recepti" za upravljanje receptov. Uporabnik lahko ustvarja, posodablja, briše in išče recepte.</li>
+</ul>
+
+<h3>Splošen opis:</h3>
+<p>
+Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša aplikacija, in prikazuje, kako uporabniki lahko dodajajo, brišejo in urejajo recepte. Z opredelitvijo različnih primerov uporabe lahko bolje razumemo zahteve sistema in zagotovimo, da učinkovito zadostuje potrebam uporabnikov. Ta dokument si prizadeva ilustrirati diagram primerov uporabe ter podrobno opisati udeležence, njihove cilje in ustrezne primere uporabe, ki prispevajo k celotni funkcionalnosti "Moji recepti."
+</p>
+
+<h3>Primeri uporabe:</h3>
+<ol>
+  <li>
+    <strong>Ustvari Recept</strong>
+    <ul>
+      <li><em>Opis</em>: Uporabniku omogoča ustvarjanje novega recepta.</li>
+      <li><em>Razširitve</em>: Vključuje možnost "Naloži Fotografija", kjer uporabnik lahko naloži sliko recepta.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Posodobi Recept</strong>
+    <ul>
+      <li><em>Opis</em>: Omogoča uporabniku, da spremeni ali posodobi obstoječi recept.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Izbriši Recept</strong>
+    <ul>
+      <li><em>Opis</em>: Uporabniku omogoča, da izbriše obstoječi recept iz svoje zbirke.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Poglej Recepte</strong>
+    <ul>
+      <li><em>Opis</em>: Uporabniku omogoča pregled seznama vseh shranjenih receptov.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Išči Recepte</strong>
+    <ul>
+      <li><em>Opis</em>: Omogoča uporabniku, da poišče določene recepte.</li>
+      <li><em>Razširitve</em>: Vključuje možnost "Filtriraj Rezultate", ki uporabniku omogoča, da zoži rezultate iskanja glede na različne kriterije.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>Scenariji:</h3>
+<ol>
+  <li><strong>Pozitiven scenarij:</strong>
+    <ul>
+      <li>Uporabnik se uspešno prijavi v aplikacijo.</li>
+      <li>Uporabnik izbere eno izmed možnosti (npr. ustvarjanje, posodabljanje ali iskanje recepta).</li>
+      <li>Sistem izvede izbrano dejanje in potrdi operacijo (npr. recept je ustvarjen, posodobljen, izbrisan itd.).</li>
+    </ul>
+  </li>
+  <li><strong>Alternativni scenariji:</strong>
+    <ul>
+      <li><strong>1.a</strong>: Med ustvarjanjem recepta uporabnik izbere možnost nalaganja fotografije, kar sproži razširitev "Naloži Fotografija".</li>
+      <li><strong>2.a</strong>: Med iskanjem recepta uporabnik izbere uporabo določenih filtrov za omejitev rezultatov, kar sproži razširitev "Filtriraj Rezultate".</li>
+    </ul>
+  </li>
+</ol>
 
 
 ![DPU](https://github.com/user-attachments/assets/94b2d8a3-edcb-4f4d-935f-b3e2f520537a)
@@ -218,10 +280,13 @@ Za lokalno kopijo in zagon sledite tem preprostim korakom.
 
 Poskrbite, da imate nameščeno naslednje:
 
-- Java 17 ali novejša
-- Maven za gradnjo backend-a
-- Node.js (priporočena različica 14 ali novejša) za frontend
-- Delujoča baza podatkov
+<ul>
+  <li><a href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html" target="_blank">Java 17 ali novejša</a></li>
+  <li><a href="https://maven.apache.org/install.html" target="_blank">Maven</a> za gradnjo backend-a</li>
+  <li><a href="https://nodejs.org/" target="_blank">Node.js</a> (priporočena različica 14 ali novejša) za frontend</li>
+  <li><a href="./#namestitev-mysql-workbench" target="_blank">Delujoča baza podatkov</a></li>
+</ul>
+
 
 ### Namestitev
 
@@ -231,7 +296,7 @@ Poskrbite, da imate nameščeno naslednje:
 git clone https://github.com/AnjaTodorov/ReceptiApp.git
 cd ReceptiApp
 ```
-### Namestitev MySQL Workbench
+<h3 id="namestitev-mysql-workbench">Namestitev MySQL Workbench</h3>
 
 1. Pojdite na [MySQL Workbench Download Page](https://dev.mysql.com/downloads/workbench/).
 2. Izberite ustrezno različico za vaš operacijski sistem in sledite navodilom za namestitev.
