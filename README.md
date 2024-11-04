@@ -12,19 +12,19 @@
 
 ## Kazalo vsebine
 
-- 📄 [Pregled](#pregled)
-- 🌟 [Vizija](#vizija)
-- 📚 [Besednjak](#besednjak)
-- ✏️ [DPU](#dpu)
-- ⭐ [Značilnosti](#značilnosti)
-- ⚙️ [Tehnološki sklad](#tehnološki-sklad)
-- 📁 [Struktura projekta](#struktura-projekta)
-- 📏 [Standardi kodiranja](#standardi-kodiranja)
-- 🌐 [Končne točke REST API](#končne-točke-REST-API)
-- 📌 [Prvi koraki](#prvi-koraki)
-- ▶️ [Zagon aplikacije](#zagon-aplikacije)
-- 👤 [Avtorji](#avtorji)
-- 📜 [Licenca](#licenca)
+- 📄 [Pregled](#-pregled)
+- 🌟 [Vizija](#-vizija)
+- 📚 [Besednjak](#-besednjak)
+- ✏️ [DPU](#-dpu)
+- ⭐ [Značilnosti](#-značilnosti)
+- ⚙️ [Tehnološki sklad](#-tehnološki-sklad)
+- 📁 [Struktura projekta](#-struktura-projekta)
+- 📏 [Standardi kodiranja](#-standardi-kodiranja)
+- 🌐 [Končne točke REST API](#-končne-točke-REST-API)
+- 📌 [Prvi koraki](#-prvi-koraki)
+- ▶️ [Zagon aplikacije](#-zagon-aplikacije)
+- 👤 [Avtorji](#-avtorji)
+- 📜 [Licenca](#-licenca)
  
 ## 📄 Pregled
 
