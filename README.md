@@ -94,18 +94,6 @@ V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen 
 <p>
 Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša aplikacija, in prikazuje, kako uporabniki lahko dodajajo, brišejo in urejajo recepte. Z opredelitvijo različnih primerov uporabe lahko bolje razumemo zahteve sistema in zagotovimo, da učinkovito zadostuje potrebam uporabnikov. Ta dokument si prizadeva ilustrirati diagram primerov uporabe ter podrobno opisati udeležence, njihove cilje in ustrezne primere uporabe, ki prispevajo k celotni funkcionalnosti "Moji recepti."
 </p>
-<h3>Cilj:</h3>
-<p>Uporabnik želi s tem primerom uporabe enostavno ustvariti, posodobiti, izbrisati ali pregledati recepte ter jih prilagoditi po svojih željah.</p>
-
-<h3>Stanje sistema po PU:</h3>
-<p>Po uspešni izvedbi primera uporabe se stanje sistema posodobi, če uporabnik doda, posodobi ali izbriše recept. Sistem shrani te spremembe, tako da so uporabnikovi recepti dostopni ob naslednjem obisku.</p>
-
-<h3>Izjeme:</h3>
-<ul>
-    <li>Če pride do napake pri nalaganju recepta (npr. manjkajoče ali napačno vnesene informacije), sistem uporabnika opozori in ponudi možnost popravljanja podatkov.</li>
-    <li>Če se pojavi napaka pri nalaganju fotografije (nepravilen format ali prevelika velikost datoteke), sistem opozori uporabnika in predlaga nalaganje fotografije v ustreznem formatu.</li>
-</ul>
-
 <h3>Primeri uporabe:</h3>
 <ol>
   <li>
@@ -142,22 +130,6 @@ Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša ap
   </li>
 </ol>
 
-<h3>Scenariji:</h3>
-<ol>
-  <li><strong>Pozitiven scenarij:</strong>
-    <ul>
-      <li>Uporabnik se uspešno prijavi v aplikacijo.</li>
-      <li>Uporabnik izbere eno izmed možnosti (npr. ustvarjanje, posodabljanje ali iskanje recepta).</li>
-      <li>Sistem izvede izbrano dejanje in potrdi operacijo (npr. recept je ustvarjen, posodobljen, izbrisan itd.).</li>
-    </ul>
-  </li>
-  <li><strong>Alternativni scenariji:</strong>
-    <ul>
-      <li><strong>1.a</strong>: Med ustvarjanjem recepta uporabnik izbere možnost nalaganja fotografije, kar sproži razširitev "Naloži Fotografija".</li>
-      <li><strong>2.a</strong>: Med iskanjem recepta uporabnik izbere uporabo določenih filtrov za omejitev rezultatov, kar sproži razširitev "Filtriraj Rezultate".</li>
-    </ul>
-  </li>
-</ol>
 
 
 ![DPU](https://github.com/user-attachments/assets/94b2d8a3-edcb-4f4d-935f-b3e2f520537a)
