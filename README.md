@@ -15,14 +15,14 @@
 - 📄 [Pregled](#-pregled)
 - 🌟 [Vizija](#-vizija)
 - 📚 [Besednjak](#-besednjak)
-- ✏️ [DPU](#-dpu)
-- ⭐ [Značilnosti](#-značilnosti)
-- ⚙️ [Tehnološki sklad](#-tehnološki-sklad)
+- ✏️ [DPU](#%EF%B8%8F-dpu)
+- ⭐ [Značilnosti](#--značilnosti)
+- ⚙️ [Tehnološki sklad](#%EF%B8%8F-tehnološki-sklad)
 - 📁 [Struktura projekta](#-struktura-projekta)
 - 📏 [Standardi kodiranja](#-standardi-kodiranja)
-- 🌐 [Končne točke REST API](#-končne-točke-REST-API)
+- 🌐 [Končne točke REST API](#-končne-točke-rest-api)
 - 📌 [Prvi koraki](#-prvi-koraki)
-- ▶️ [Zagon aplikacije](#-zagon-aplikacije)
+- ▶️ [Zagon aplikacije](#%EF%B8%8F-zagon-aplikacije)
 - 👤 [Avtorji](#-avtorji)
 - 📜 [Licenca](#-licenca)
  
@@ -94,6 +94,17 @@ V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen 
 <p>
 Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša aplikacija, in prikazuje, kako uporabniki lahko dodajajo, brišejo in urejajo recepte. Z opredelitvijo različnih primerov uporabe lahko bolje razumemo zahteve sistema in zagotovimo, da učinkovito zadostuje potrebam uporabnikov. Ta dokument si prizadeva ilustrirati diagram primerov uporabe ter podrobno opisati udeležence, njihove cilje in ustrezne primere uporabe, ki prispevajo k celotni funkcionalnosti "Moji recepti."
 </p>
+<h3>Cilj:</h3>
+<p>Uporabnik želi s tem primerom uporabe enostavno ustvariti, posodobiti, izbrisati ali pregledati recepte ter jih prilagoditi po svojih željah.</p>
+
+<h3>Stanje sistema po PU:</h3>
+<p>Po uspešni izvedbi primera uporabe se stanje sistema posodobi, če uporabnik doda, posodobi ali izbriše recept. Sistem shrani te spremembe, tako da so uporabnikovi recepti dostopni ob naslednjem obisku.</p>
+
+<h3>Izjeme:</h3>
+<ul>
+    <li>Če pride do napake pri nalaganju recepta (npr. manjkajoče ali napačno vnesene informacije), sistem uporabnika opozori in ponudi možnost popravljanja podatkov.</li>
+    <li>Če se pojavi napaka pri nalaganju fotografije (nepravilen format ali prevelika velikost datoteke), sistem opozori uporabnika in predlaga nalaganje fotografije v ustreznem formatu.</li>
+</ul>
 
 <h3>Primeri uporabe:</h3>
 <ol>
