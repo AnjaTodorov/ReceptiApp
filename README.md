@@ -132,8 +132,8 @@ Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša ap
 </ol>
 
 
+![ReceptiDPU](https://github.com/user-attachments/assets/836c6368-7a19-4837-bc7c-2b924dee1013)
 
-![DPU](https://github.com/user-attachments/assets/94b2d8a3-edcb-4f4d-935f-b3e2f520537a)
 
 
 ## ⭐  Značilnosti
