@@ -62,6 +62,13 @@
             <label for="description">Opis:</label>
             <textarea id="description" name="opis" rows="4" required></textarea>
         
+            <label for="tip">Tip:</label>
+            <select id="tip" name="tip" required>
+                <option value="zajtrk">Zajtrk</option>
+                <option value="kosilo">Kosilo</option>
+                <option value="večerja">Večerja</option>
+            </select>
+        
             <button type="submit">Dodaj</button>
         </form>
     </div>
@@ -82,6 +89,14 @@
 
         <label for="updateOpis">Opis:</label>
         <textarea id="updateOpis" name="updateOpis" rows="4" required></textarea>
+
+        <!-- Dropdown for Tip (Zajtrk, Kosilo, Večerja) -->
+        <label for="updateTip">Tip:</label>
+        <select id="updateTip" name="updateTip" required>
+            <option value="zajtrk">Zajtrk</option>
+            <option value="kosilo">Kosilo</option>
+            <option value="večerja">Večerja</option>
+        </select>
 
         <button type="button" onclick="updateRecept(document.getElementById('updateId').value)">Shrani spremembe</button>
     </div>

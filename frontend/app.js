@@ -12,7 +12,6 @@ closeModalBtn.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
-
 // Handle form submission for adding a recipe
 const recipeForm = document.getElementById("recipeForm");
 
@@ -20,6 +19,9 @@ recipeForm.addEventListener("submit", async function(event) {
     event.preventDefault();  // Prevent the default form submission
 
     const formData = new FormData(recipeForm);  // Collect form data
+    // Get the selected tip from the dropdown
+    const tip = document.getElementById("tip").value;
+    formData.append("tip", tip);  // Append the tip to the form data
 
     try {
         const response = await fetch("http://localhost:8080/recepti", {
@@ -32,7 +34,6 @@ recipeForm.addEventListener("submit", async function(event) {
             modal.style.display = "none";  // Close modal on success
             loadRecipes(); 
             location.reload(); 
-            
         } else {
             alert("Failed to add recipe. Please try again.");
         }
@@ -62,6 +63,7 @@ async function loadRecipes() {
                         </div>
                         <div class="card-footer">
                             <p class="text-muted">${recipe.opis}</p>
+                            <p class="text-muted">Tip: ${recipe.tip}</p> <!-- Display the recipe type -->
                         </div>
                         <div class="button-container">
                             <!-- Edit Button -->
@@ -94,6 +96,9 @@ function editRecipe(id) {
             document.getElementById('updateSestavine').value = recipe.sestavine;
             document.getElementById('updateOpis').value = recipe.opis;
 
+            // Set the `tip` in the update modal (set the selected option)
+            document.getElementById('updateTip').value = recipe.tip;
+
             // Open the modal for editing
             document.getElementById('updateModal').style.display = 'block';
         })
@@ -119,13 +124,13 @@ function updateRecept(id) {
     const naziv = document.getElementById('updateNaziv').value;
     const sestavine = document.getElementById('updateSestavine').value;
     const opis = document.getElementById('updateOpis').value;
-    
+    const tip = document.getElementById('updateTip').value; // Get the selected tip
 
     const updatedRecipe = {
         naziv: naziv,
         sestavine: sestavine,
         opis: opis,
-        
+        tip: tip  // Add the tip to the updated recipe data
     };
 
     console.log('Updating recipe with ID:', id);
@@ -158,7 +163,6 @@ function updateRecept(id) {
     });
 }
 
-
 function deleteRecipe(id) {
     fetch(`http://localhost:8080/recepti/${id}`, {
         method: 'DELETE'
@@ -171,7 +175,6 @@ function deleteRecipe(id) {
         }
     });
 }
-
 
 document.getElementById('searchButton').addEventListener('click', function() {
     const searchTerm = document.getElementById('searchBar').value.toLowerCase(); // Get the search term

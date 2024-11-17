@@ -1,7 +1,5 @@
 package com.RIS.Mojirecepti.entity;
 
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,26 +11,35 @@ public class Recepti {
     @Column(name = "idRecepti")
     private int idRecepti;
 
+    @Column(name = "naziv", nullable = false, length = 40)
+    private String naziv;
+
     @Column(name = "slika", nullable = false, length = 100)
     private String slika;
-
-    @Column(name = "naziv", nullable = false, length = 100)
-    private String naziv;
 
     @Column(name = "sestavine", nullable = false, columnDefinition = "TEXT")
     private String sestavine;
 
+    @Column(name = "tip", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Tip tip;
+
     @Column(name = "opis", nullable = false, columnDefinition = "TEXT")
     private String opis;
+
+    public enum Tip {
+        zajtrk, kosilo, večerja
+    }
 
     // Default constructor
     public Recepti() {}
 
     // Parameterized constructor
-    public Recepti(String slika, String naziv, String sestavine, String opis) {
-        this.slika = slika;
+    public Recepti(String naziv, String slika, String sestavine, Tip tip, String opis) {
         this.naziv = naziv;
+        this.slika = slika;
         this.sestavine = sestavine;
+        this.tip = tip;
         this.opis = opis;
     }
 
@@ -45,13 +52,6 @@ public class Recepti {
         this.idRecepti = idRecepti;
     }
 
-    public String getSlika() {
-        return slika;
-    }
-
-    public void setSlika(String slika) {
-        this.slika = slika;
-    }
     public String getNaziv() {
         return naziv;
     }
@@ -60,12 +60,28 @@ public class Recepti {
         this.naziv = naziv;
     }
 
+    public String getSlika() {
+        return slika;
+    }
+
+    public void setSlika(String slika) {
+        this.slika = slika;
+    }
+
     public String getSestavine() {
         return sestavine;
     }
 
     public void setSestavine(String sestavine) {
         this.sestavine = sestavine;
+    }
+
+    public Tip getTip() {
+        return tip;
+    }
+
+    public void setTip(Tip tip) {
+        this.tip = tip;
     }
 
     public String getOpis() {
@@ -80,9 +96,10 @@ public class Recepti {
     public String toString() {
         return "Recepti{" +
                 "idRecepti=" + idRecepti +
-                ", slika='" + slika + '\'' +
                 ", naziv='" + naziv + '\'' +
+                ", slika='" + slika + '\'' +
                 ", sestavine='" + sestavine + '\'' +
+                ", tip=" + tip +
                 ", opis='" + opis + '\'' +
                 '}';
     }
