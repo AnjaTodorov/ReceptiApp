@@ -23,14 +23,33 @@
                     <li><a href="">O nas</a></li>
                     <li><a href="recepti.html">Recepti</a></li>
                     <a href="#" id="openModalBtn" style="display: inline-block; background: #41b816; color: #ffffffc1; padding: 8px 30px; margin: 30px 0; border-radius: 30px; transition: background 0.5s;" class="btn">Dodaj Recept</a></li>
-                   
+                   <li><input type="text" id="searchBar" placeholder="Išči recept">
+                    <button type="button" id="searchButton">
+                        <i class="fas fa-search" style="color: white;"></i>
+                    </button></li>
                 </ul>
             </nav>
             <div id="searchContainer">
-                <input type="text" id="searchBar" placeholder="Išči recept">
-                <button type="button" id="searchButton">
-                    <i class="fas fa-search" style="color: white;"></i>
-                </button>
+                <div id="filterContainer" style="align-items: center; gap: 30px; margin-left: 20px;">
+                    <!-- Zajtrk filter -->
+                    <div class="filter-option" data-tip="zajtrk" onclick="filterRecipesWithUI(this)">
+                        <div class="filter-box"></div>
+                        <span>Zajtrk</span>
+                        <img src="sliki/breakfast.png" alt="Zajtrk" style="width: 25px; height: 25px;">
+                    </div>
+                    <!-- Kosilo filter -->
+                    <div class="filter-option" data-tip="kosilo" onclick="filterRecipesWithUI(this)">
+                        <div class="filter-box"></div>
+                        <span>Kosilo</span>
+                        <img src="sliki/meal.png" alt="Kosilo" style="width: 25px; height: 25px;">
+                    </div>
+                    <!-- Večerja filter -->
+                    <div class="filter-option" data-tip="večerja" onclick="filterRecipesWithUI(this)">
+                        <div class="filter-box"></div>
+                        <span>Večerja</span>
+                        <img src="sliki/vecera.png" alt="Večerja" style="width: 25px; height: 25px;">
+                    </div>
+                </div>
             </div>
 
             <img src="sliki/menu.png" class="menu-icon" onclick="menutoggle()">

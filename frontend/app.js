@@ -189,3 +189,60 @@ document.getElementById('searchButton').addEventListener('click', function() {
 
 // Initial load of recipes
 document.addEventListener("DOMContentLoaded", loadRecipes);
+
+
+
+
+function filterRecipesWithUI(element) {
+    const filterBox = element.querySelector('.filter-box');
+    const isChecked = filterBox.classList.contains('checked'); // Check if the filter is already selected
+    const filterType = element.getAttribute('data-tip'); // Get the filter type
+
+    if (isChecked) {
+        // Uncheck the filter and reload all recipes
+        filterBox.classList.remove('checked');
+        loadRecipes(); // Fetch and display all recipes
+    } else {
+        // Check the filter and fetch filtered recipes
+        document.querySelectorAll('.filter-box').forEach(box => box.classList.remove('checked')); // Uncheck all other filters
+        filterBox.classList.add('checked'); // Check the current filter
+
+        // Fetch and display filtered recipes
+        fetch(`http://localhost:8080/recepti/tip/${filterType}`)
+            .then(response => response.json())
+            .then(recipes => {
+                const recipeCardsContainer = document.getElementById('recipeCards');
+                recipeCardsContainer.innerHTML = ''; // Clear existing content
+
+                recipes.forEach(recipe => {
+                    const card = `
+                        <div class="col-md-4">
+                            <div class="card border shadow-sm mb-4">
+                                <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${recipe.naziv}</h5>
+                                    <p class="card-text">${recipe.sestavine}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <p class="text-muted">${recipe.opis}</p>
+                                    <p class="text-muted">Tip: ${recipe.tip}</p>
+                                </div>
+                                <div class="button-container">
+                                    <button class="circle-btn" onclick="editRecipe(${recipe.idRecepti})">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    recipeCardsContainer.innerHTML += card;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching filtered recipes:', error);
+            });
+    }
+}
