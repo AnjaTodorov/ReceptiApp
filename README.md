@@ -19,6 +19,7 @@
 - ⭐ [Značilnosti](#--značilnosti)
 - ⚙️ [Tehnološki sklad](#%EF%B8%8F-tehnološki-sklad)
 - 📁 [Struktura projekta](#-struktura-projekta)
+- 🖇️ [Diagram razredov](#%EF%B8%8F-diagram-razredov)
 - 📏 [Standardi kodiranja](#-standardi-kodiranja)
 - 🌐 [Končne točke REST API](#-končne-točke-rest-api)
 - 📌 [Prvi koraki](#-prvi-koraki)
@@ -131,8 +132,8 @@ Ta diagram zagotavlja jasno predstavitev funkcionalnosti, ki jih ponuja naša ap
 </ol>
 
 
+![ReceptiDPU](https://github.com/user-attachments/assets/836c6368-7a19-4837-bc7c-2b924dee1013)
 
-![DPU](https://github.com/user-attachments/assets/94b2d8a3-edcb-4f4d-935f-b3e2f520537a)
 
 
 ## ⭐  Značilnosti
@@ -218,6 +219,122 @@ project-root/
 
 ```
 
+## 🖇️ Diagram razredov
+
+Spodaj je vizualni prikaz diagrama razredov backend aplikacije. Ta diagram prikazuje strukturo in povezave med različnimi razredi ter vmesniki, ki sestavljajo backend sistem.
+
+
+![ReceptiRazredniDiagram](https://github.com/user-attachments/assets/34c4c184-0e7b-417f-91bb-026f4ef779a6)
+
+---
+
+## Opis diagrama razredov
+
+Diagram razredov prikazuje osnovno strukturo aplikacije **Moji Recepti** in njene glavne funkcionalne komponente. Vključuje entitete, kontrolerje in konfiguracije ter prikazuje njihove odnose in odgovornosti.
+
+### 1. Entitete
+
+- **Recepti**
+  - **Namen:** Predstavlja recept v aplikaciji.
+  - **Atributi:**
+    - `idRecepti`: Unikatni identifikator za recept.
+    - `naziv`, `sestavine`, `slika`, `opis`: Opisujejo ime recepta, sestavine, sliko in podrobnosti recepta.
+    - `tip`: Določa tip recepta, ki je povezan z enumeracijo **Tip** (npr. zajtrk, kosilo, večerja).
+  - **Ključne metode:**
+    - Getterji in setterji za vse atribute (npr. `getNaziv()`, `setTip()`).
+    - `toString()`: Pretvori objekt recepta v berljivo besedilo.
+
+- **Tip (Enumeracija)**
+  - **Namen:** Določa tipe obrokov.
+  - **Vrednosti:** 
+    - `ZAJTRK` (Zajtrk)
+    - `KOSILO` (Kosilo)
+    - `VEČERJA` (Večerja).
+  - **Povezava:** Neposredno povezan z razredom **Recepti**, kjer določa tip posameznega recepta.
+
+- **NacrtObrokov**
+  - **Namen:** Predstavlja načrt obrokov.
+  - **Atributi:**
+    - `idNacrtObrokov`: Unikaten ID za načrt obrokov.
+    - `datum`: Datum načrta obrokov.
+  - **Ključne metode:**
+    - Getterji in setterji (npr. `getDatum()`, `setDatum()`).
+
+- **ReceptiNacrtObrokov**
+  - **Namen:** Povezovalna entiteta, ki povezuje recepte z načrti obrokov.
+  - **Atributi:**
+    - `idReceptNacrtObrokov`: Unikaten ID, ki povezuje recept z načrtom obrokov.
+    - `recepti`: Referenca na pripadajoči recept.
+    - `nacrtObrokov`: Referenca na pripadajoči načrt obrokov.
+  - **Ključne metode:**
+    - Getterji in setterji za atribute.
+    - `toString()`: Vrne berljivo predstavitev povezave.
+
+---
+
+### 2. Repozitoriji (vmesniki)
+
+Repozitoriji abstraktirajo dostop do podatkov in zagotavljajo funkcionalnosti za iskanje, shranjevanje in posodabljanje podatkov.
+
+- **ReceptiRepository**
+  - **Namen:** Upravljanje entitet `Recepti`.
+  - **Ključna metoda:** `findByTip(tip: Tip): List<Recepti>` vrne recepte določenega tipa.
+
+- **NacrtObrokovRepository**
+  - **Namen:** Upravljanje entitet `NacrtObrokov`.
+  - **Ključna metoda:** `findByDate(date: Date)` poišče načrte obrokov glede na datum.
+
+- **ReceptiNacrtObrokovRepository**
+  - **Namen:** Upravljanje povezav med recepti in načrti obrokov.
+
+---
+
+### 3. Kontrolerji
+
+Kontrolerji izvajajo poslovno logiko aplikacije, obravnavajo zahteve in komunicirajo z repozitoriji.
+
+- **ReceptiController**
+  - **Namen:** Upravljanje CRUD operacij za `Recepti`.
+  - **Ključne metode:**
+    - `getAllRecepti()`: Pridobi vse recepte.
+    - `getReceptById(Long id)`: Pridobi recept glede na ID.
+    - `createRecept(...)`: Ustvari nov recept, vključno z nalaganjem slike.
+    - `updateRecept(...)`: Posodobi obstoječi recept.
+    - `deleteRecept(Long id)`: Izbriše recept glede na ID.
+
+- **NacrtObrokovController**
+  - **Namen:** Upravljanje CRUD operacij za `NacrtObrokov`.
+  - **Ključne metode:**
+    - `getAllNacrtObrokov()`: Pridobi vse načrte obrokov.
+    - `createNacrtObrok(...)`: Ustvari nov načrt obrokov.
+    - `updateNacrtObrok(...)`: Posodobi obstoječi načrt obrokov.
+    - `deleteNacrtObrok(Long id)`: Izbriše načrt obrokov glede na ID.
+
+- **ReceptiNacrtObrokovController**
+  - **Namen:** Upravljanje povezave med recepti in načrti obrokov.
+  - **Ključne metode:**
+    - `getAllMealPlans()`: Pridobi vse povezave med recepti in načrti obrokov.
+    - `createMealPlan(...)`: Ustvari novo povezavo.
+    - `deleteMealPlan(Long id)`: Odstrani specifično povezavo.
+
+---
+
+### 4. Konfiguracije
+
+- **WebConfig**
+  - **Namen:** Konfigurira CORS nastavitve za omogočanje cross-origin zahtev.
+  - **Ključna metoda:**
+    - `addCorsMappings(...)`: Določi CORS nastavitve za aplikacijo.
+
+---
+
+### 5. Glavni razred
+
+- **MojiReceptiApplication**
+  - **Namen:** Vstopna točka aplikacije.
+  - **Ključna metoda:** `main(String[] args)` inicializira Spring Boot aplikacijo.
+
+---
 ## 📏 Standardi kodiranja
 
 Pri razvoju aplikacije "Moji recepti" upoštevamo določene standarde kodiranja, da zagotovimo berljivost, vzdržljivost in kakovost kode. Ti standardi vključujejo:
