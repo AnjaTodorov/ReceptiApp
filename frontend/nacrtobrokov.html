@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Načrt obrokov</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.html">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="sliki/slika36.png" width="150px">
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Domov</a></li>
+                    <li><a href="recepti.html">Recepti</a></li>
+                    <li><a href="nacrtobrokov.html">Načrt obrokov</a></li>
+                    
+                </ul>
+            </nav>
+
+            <img src="sliki/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Meal Plan Form -->
+<form id="meal-plan-form">
+    <div class="date-selector">
+        <label for="meal-date">Izberi datum:</label>
+        <input type="date" id="meal-date">
+    </div>
+    <div class="meal-table">
+        <!-- Meal Table Header -->
+        <div class="meal-header">
+            <div>Zajtrk</div>
+            <div>Kosilo</div>
+            <div>Večerja</div>
+        </div>
+        
+        <!-- Meal Table Content -->
+        <div class="meal-content">
+            <div id="breakfast-recipes" class="meal-column"></div>
+            <div id="lunch-recipes" class="meal-column"></div>
+            <div id="dinner-recipes" class="meal-column"></div>
+        </div>
+    </div>
+    
+    <!-- Submit Button -->
+    <button type="submit" id="submit-plan">Izdelaj načrt obrokov</button>
+</form>
+</div>
+
+<script src="obrok.js"></script>
+</body>
+</html>
+

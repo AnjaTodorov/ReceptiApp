@@ -59,11 +59,16 @@ async function loadRecipes() {
                         <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
                         <div class="card-body">
                             <h5 class="card-title">${recipe.naziv}</h5>
-                            <p class="card-text">${recipe.sestavine}</p>
                         </div>
                         <div class="card-footer">
+                        <p class="text-muted">Vrsta obroka: ${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</p>
+                    </div>
+                        <div class="card-footer">
+                        <p class="card-text">${recipe.sestavine}</p>
+                        </div>
+                       
+                        <div class="card-footer">
                             <p class="text-muted">${recipe.opis}</p>
-                            <p class="text-muted">Tip: ${recipe.tip}</p> <!-- Display the recipe type -->
                         </div>
                         <div class="button-container">
                             <!-- Edit Button -->
@@ -216,27 +221,34 @@ function filterRecipesWithUI(element) {
 
                 recipes.forEach(recipe => {
                     const card = `
-                        <div class="col-md-4">
-                            <div class="card border shadow-sm mb-4">
-                                <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${recipe.naziv}</h5>
-                                    <p class="card-text">${recipe.sestavine}</p>
-                                </div>
-                                <div class="card-footer">
-                                    <p class="text-muted">${recipe.opis}</p>
-                                    <p class="text-muted">Tip: ${recipe.tip}</p>
-                                </div>
-                                <div class="button-container">
-                                    <button class="circle-btn" onclick="editRecipe(${recipe.idRecepti})">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
-                                    <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="col-md-4">
+                    <div class="card border shadow-sm mb-4">
+                        <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
+                        <div class="card-body">
+                            <h5 class="card-title">${recipe.naziv}</h5>
                         </div>
+                        <div class="card-footer">
+                        <p class="text-muted">Vrsta obroka: ${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</p>
+                    </div>
+                        <div class="card-footer">
+                        <p class="card-text">${recipe.sestavine}</p>
+                        </div>
+                       
+                        <div class="card-footer">
+                            <p class="text-muted">${recipe.opis}</p>
+                        </div>
+                        <div class="button-container">
+                            <!-- Edit Button -->
+                            <button class="circle-btn" onclick="editRecipe(${recipe.idRecepti})">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <!-- Delete Button -->
+                            <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                     `;
                     recipeCardsContainer.innerHTML += card;
                 });

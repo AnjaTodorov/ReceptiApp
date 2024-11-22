@@ -19,7 +19,7 @@ public class ReceptiController {
     @Autowired
     private ReceptiRepository receptiRepository;
 
-    private final String uploadDir = "C:/Users/Ile/Desktop/3.semestar/RIS/ReceptiApp/frontend/sliki";
+    private final String uploadDir = "C:/Users/Ile/Desktop/3.semestar/RIS/ReceptiApp/frontend/sliki/";
 
     @GetMapping
     public List<Recepti> getAllRecepti() {

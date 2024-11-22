@@ -265,31 +265,7 @@ ul{
   display: none;
 }
 
-@media only screen and (max-width:800px){
 
-  nav ul{
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background: #333;
-    width: 100%;
-    overflow: hidden;
-    transition: max-height 0.5s;
-  }
-  nav ul li{
-    display: block;
-    margin-right: 50px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-  }
-  nav ul li a{
-    color: #fff;
-  }
-  .menu-icon{
-    display: block;
-    cursor: pointer;
-  }
-}
 
 /*----------all product page ------*/
 .row-2{
@@ -321,45 +297,7 @@ select:focus{
   color: #fff;
 }
 
-/*-------single product details----*/
 
-.single-product{
-  margin-top: 80px;
-}
-.single-product .col-2 img{
-  padding: 0;
-}
-.single-product .col-2{
-  padding: 20px;
-}
-.single-product h4{
-  margin: 20px 0;
-  font-size: 22px;
-  font-weight: bold;
-}
-.single-product input{
-  width: 50px;
-  height: 40px;
-  padding-left: 10px;
-  font-size: 20px;
-  margin-right: 10px;
-  border: 1px solid #3bff5c;
-}
-input:focus{
-  outline: none;
-}
-.single-product .fa{
-  color: #3bff5c;
-}
-.small-img-row{
-  display: flex;
-  justify-content: space-between;
-}
-
-.small-img-col{
-  flex-basis: 24%;
-  cursor: pointer;
-}
 
 .col-2 .center {
   display: block;
@@ -383,206 +321,6 @@ ion-icon {
   font-size: 23px;
 }
 
-.add-cart {
-  display: inline-block;
-  background: #a4a621;
-  color: #ffffffc1;
-  padding: 8px 30px;
-  margin: 30px 0;
-  border-radius: 30px;
-  transition: background 0.5s;
-}
-
-.add-cart:hover{
-  background: #34564e;
-}
-
-
-.products-container {
-  max-width: 650px;
-  justify-content: space-around;
-  margin: 0 auto;
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding-bottom: 100px;
-}
-
-.products-container ion-icon {
-  font-size: 25px;
-  color: #17b41f;
-  margin-left: 10px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.product-header {
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  justify-content: flex-start;
-  border-bottom: 4px solid lightgrey;
-  margin: 0 auto;
-}
-.product-title {
-  width: 45%;
-}
-.price {
-  width: 25%;
-  border-bottom: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-}
-
-.quantity {
-  width: 30%;
-  border-bottom: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-}
-
-.total {
-  width: 12%;
-  border-bottom: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-}
-
-.product {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid lightgray;
-}
-
-.product ion-icon {
-  cursor: pointer;
-}
-
-.products {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.products img {
-  width: 75px;
-}
-
-.basketTotalContainer {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  padding: 10px 0;
-}
-
-.basketTotalTitle {
-  width: 30%;
-}
-
-.basketTotal{
-  width: 11%;
-}
-
-span.price{
-  justify-content: end;
-}
-
-span.quantity{
-  justify-content: center;
-}
-
-.remove-button {
-  background-color: #17b41f;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  font-size: 14px;
-  cursor: pointer;
-  float: right;
-  margin-top: 5px;
-}
-
-.cart{
-  display: inline-block;
-  background: #f0f19a;
-  color: #ffffffc1;
-  padding: 8px 25px;
-  margin: 25px 0;
-  border-radius: 25px;
-  transition: background 0.5s;
-}
-
-.cart span{
-
-  justify-content: right;
-  background-color: #a4a621;
-  color: #ffffff;
-  padding: 4px 8px;
-  border-radius: 30%;
-}
-
-
-.delivery-options {
-  margin-top: 20px;
-}
-
-.delivery-options h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.delivery-options ul {
-  list-style: none;
-  padding: 0;
-}
-
-.delivery-options li {
-  margin-bottom: 10px;
-}
-
-.delivery-options input[type="radio"] {
-  margin-right: 10px;
-}
-
-.delivery-options label {
-  font-size: 16px;
-}
-
-/* Style the selected label */
-.delivery-options input[type="radio"]:checked + label {
-  font-weight: bold;
-}
-
-/* Add some padding and border to the delivery options */
-.delivery-options {
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-
-@media only screen and (max-width:600px){
-  .row{
-    text-align: center;
-  }
-  .col-3, .col-4, .col-5{
-    flex-basis: 100%;
-  }
-  .single-product .row{
-    text-align: left;
-  }
-  .single-product .col-2{
-    padding:20px 0;
-  }
-  .single-product h1{
-    font-size: 26px;
-    line-height: 32px;
-  }
-}
 /* Modal styles */
 .modal {
   display: none;
@@ -720,8 +458,6 @@ button:hover {
 
 
 
-
-
 /* General card layout */
 .card {
   display: flex;
@@ -809,19 +545,11 @@ button:hover {
   padding: 0px;
 }
 
-
-
-
-
-
-
 /* Optional: If you prefer specific paddings for card-text and text-muted */
 .card-text, .text-muted {
   padding-left: 15px; /* Optional left padding */
   padding-right: 15px; /* Optional right padding */
 }
-
-
 
 .modal1 {
   display: none; /* Hidden by default */
@@ -929,4 +657,167 @@ button:hover {
   align-items: center; /* Vertically aligns items */
   gap: 10px; /* Adds spacing between elements */
   cursor: pointer; /* Makes the entire filter clickable */
+}
+
+
+
+
+
+
+
+
+.date-selector {
+  margin-bottom: 20px;
+}
+
+.meal-table {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+}
+
+.meal-header, .meal-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.meal-header div, .meal-column {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.meal-column {
+  min-height: 100px;
+}
+
+.recipe-item {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.recipe-item img {
+  max-width: 80px;
+  border-radius: 5px;
+}
+
+.recipe-item.selected {
+  border: 2px solid green;
+}
+
+
+
+
+#meal-plan-form {
+  max-width: 970px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+              0 -4px 6px rgba(0, 0, 0, 0.05); /* Shadow above */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Center the Date Selector */
+.date-selector {
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+.date-selector label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.date-selector input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+/* Submit Button */
+#submit-plan {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #28A745;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+#submit-plan:hover {
+  background-color: #218838;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+#meal-plan-form .meal-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#meal-plan-form .meal-header {
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+#meal-plan-form .meal-header > div {
+  flex: 1;
+}
+
+#meal-plan-form .meal-content {
+  display: flex;
+}
+
+#meal-plan-form .meal-column {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  box-sizing: border-box;
+}
+
+#meal-plan-form .meal-column .recipe-item {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 200px;
+  height: 150px;
+}
+
+.recipe-item img {
+  width: 150px; /* Set desired width */
+  height: 100px; /* Set desired height */
+  object-fit: cover;
+  margin-bottom: 8px;
 }

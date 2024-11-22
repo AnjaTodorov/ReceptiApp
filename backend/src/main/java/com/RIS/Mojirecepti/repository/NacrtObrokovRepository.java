@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface NacrtObrokovRepository extends JpaRepository<NacrtObrokov, Long> {
     List<NacrtObrokov> findByDatum(LocalDate datum);
+    boolean existsByDatum(LocalDate datum); // Check if a meal plan exists for the given date
+
 }
