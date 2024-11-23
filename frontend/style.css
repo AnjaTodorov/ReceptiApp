@@ -755,7 +755,7 @@ button:hover {
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #28A745;
+  background-color: #41b816;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -820,4 +820,175 @@ button:hover {
   height: 100px; /* Set desired height */
   object-fit: cover;
   margin-bottom: 8px;
+}
+
+#meal-plans-list h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333; /* Adjust color as needed */
+  margin-top: 90px;
+}
+/* General styles for meal plan cards */
+.meal-plan-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  position: relative; /* Ensure that the button is positioned relative to this card */
+}
+
+.meal-plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.meal-plan-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meal-plan-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-plan-item h4 {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+  text-align: center;
+  font-weight:bolder;
+}
+
+.recipe-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recipe-photo {
+  width: 100%;
+  max-width: 150px; /* Max size for the photo */
+  height: auto;
+  object-fit: cover; /* Ensures the image fits nicely without distortion */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.recipe-detail span {
+  /*font-weight: bold;*/
+  font-size: 1.0rem;
+  margin-bottom: 5px;
+}
+
+.recipe-detail p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Ensure the recipe item photo is also resized */
+.recipe-item img {
+  width: 100%;
+  max-width: 100px; /* Max size for each image in the recipe list */
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.recipe-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.recipe-item.selected {
+  border: 2px solid #28a745; /* Highlight selected recipe */
+}
+
+.recipe-item span {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add styles for the 'Display Necessary Ingredients' button */
+.display-ingredients-btn {
+  background-color: #28a745; /* Green color */
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for the button */
+}
+
+.display-ingredients-btn:hover {
+  background-color: #28A745; /* Darker green on hover */
+}
+
+.shopping-cart-icon {
+  font-size: 1.2rem; /* Make the shopping cart icon a bit larger */
+}
+
+/* Ensure the meal plan cards are responsive */
+@media (max-width: 768px) {
+  .meal-plan-card {
+    width: 100%;
+  }
+
+  .meal-plan-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* Adjust photo size for smaller screens */
+  .recipe-photo {
+    max-width: 120px; /* Adjust max-width for better responsiveness */
+  }
+}
+
+#meal-plan-cards {
+  margin-left: 120px;
+  margin-right: 120px;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
+.show-ingredients-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #41b816;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.meal-divider {
+  border: 1px solid #ccc;
+  margin: 10px 0;
 }
