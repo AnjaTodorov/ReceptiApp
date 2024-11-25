@@ -992,3 +992,63 @@ button:hover {
   border: 1px solid #ccc;
   margin: 10px 0;
 }
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px); 
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px; 
+  max-width: 500px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.popup-content h3 {
+  font-size: 1.5rem; 
+  margin-bottom: 15px; 
+  color: #333;
+}
+.popup-content ol {
+  list-style: decimal inside; 
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem; 
+}
+
+.popup-content ol li {
+  margin-bottom: 10px; 
+  color: #555;
+}
+
+.popup-content button {
+  padding: 8px 18px; 
+  background-color: #41b816;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem; 
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+  display: block;
+  width: 100%;
+}
+
+.popup-content button:hover {
+  background-color: #35a013;
+}

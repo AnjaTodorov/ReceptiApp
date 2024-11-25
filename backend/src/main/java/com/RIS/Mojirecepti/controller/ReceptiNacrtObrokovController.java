@@ -108,6 +108,15 @@ public class ReceptiNacrtObrokovController {
 
         return ResponseEntity.ok(response);  // Return the response as JSON
     }
+    @GetMapping("/meal-plan/{id}/ingredients")
+    public List<String> getIngredientsByMealPlan(@PathVariable("id") int nacrtObrokovId) {
+        List<ReceptiNacrtObrokov> receptiNacrtObrokovList = receptiNacrtObrokovRepository.findByNacrtObrokovId(nacrtObrokovId);
+
+        return receptiNacrtObrokovList.stream()
+                .map(receptiNacrtObrokov -> receptiNacrtObrokov.getRecepti().getSestavine())
+                .collect(Collectors.toList());
+    }
+
 }
 
 

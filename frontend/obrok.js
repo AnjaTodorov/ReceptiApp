@@ -104,12 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         <hr class="meal-divider"/> <!-- Border after Večerja -->
                     </div>
                     <!-- Add the button inside each card -->
-                    <button class="show-ingredients-btn">
+                    <button class="show-ingredients-btn"  data-id="${plan.idNacrtObrokov}">
                         Prikaži potrebne sestavine
                         <img src="sliki/grocery-cart.png" alt="" style="width: 30px; height: 30px; vertical-align: middle;"/>
                     </button>
                 `;
                     mealPlansContainer.appendChild(card);
+                    mealPlansContainer.addEventListener('click', async (event) => {
+                        const button = event.target.closest('.show-ingredients-btn');
+                        if (button) {
+                            const mealPlanId = button.getAttribute('data-id');
+                             
+                            try {
+                                const ingredients = await fetchIngredients(mealPlanId);
+                    
+                                showPopup(ingredients); 
+                            } catch (error) {
+                                console.error('Error fetching ingredients:', error);
+                                alert('Could not fetch ingredients. Please try again.');
+                            }
+                        }
+                    });
+                    
+                    
                 });
             } else {
                 mealPlansContainer.innerHTML = '<p>No meal plans available.</p>';
@@ -119,6 +136,60 @@ document.addEventListener('DOMContentLoaded', () => {
             mealPlansContainer.innerHTML = '<p>Error loading meal plans.</p>';
         }
     };
+    const fetchIngredients = async (mealPlanId) => {
+        try {
+           
+            const response = await fetch(`http://localhost:8080/meal-plans/meal-plan/${mealPlanId}/ingredients`);
+    
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch ingredients: ${response.status} - ${errorText}`);
+            }
+    
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error in fetchIngredients:', error);
+            throw error;
+        }
+    };
+    
+    const showPopup = (ingredients) => {
+        const existingPopup = document.querySelector('.popup');
+        if (existingPopup) {
+            document.body.removeChild(existingPopup);
+        }
+    
+        const formattedIngredients = ingredients
+            .flatMap(ingredient => ingredient.split(',')) 
+            .map(item => item.trim()) 
+            .filter(item => item !== ""); 
+    
+        const overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+        document.body.appendChild(overlay);
+    
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <div class="popup-content">
+                <h3>Potrebne sestavine 🍽️</h3><br>
+                <ol> <!-- Use <ol> for a numbered list -->
+                    ${formattedIngredients.map((ingredient) => `<li>${ingredient}</li>`).join('')}
+                </ol>
+                <button class="close-popup-btn">Zapri</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    
+        const closeButton = popup.querySelector('.close-popup-btn');
+        closeButton.addEventListener('click', () => {
+            document.body.removeChild(popup); 
+            document.body.removeChild(overlay); 
+        });
+    };
+    
+    
 
     // Helper function to get recipe details (name, image, and ingredients) based on meal type
     const getRecipeDetails = async (plan, mealType) => {
