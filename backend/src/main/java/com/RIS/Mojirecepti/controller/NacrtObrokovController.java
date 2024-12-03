@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -33,23 +34,5 @@ public class NacrtObrokovController {
         return nacrtObrokovRepository.save(nacrtObrokov);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<NacrtObrokov> updateNacrtObrokov(
-            @PathVariable Long id,
-            @RequestBody NacrtObrokov nacrtObrokovDetails
-    ) {
-        NacrtObrokov nacrtObrokov = nacrtObrokovRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Nacrt obrokov not found with id: " + id));
 
-        nacrtObrokov.setDatum(nacrtObrokovDetails.getDatum());
-        NacrtObrokov updatedNacrtObrokov = nacrtObrokovRepository.save(nacrtObrokov);
-
-        return ResponseEntity.ok(updatedNacrtObrokov);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNacrtObrokov(@PathVariable Long id) {
-        nacrtObrokovRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
 }

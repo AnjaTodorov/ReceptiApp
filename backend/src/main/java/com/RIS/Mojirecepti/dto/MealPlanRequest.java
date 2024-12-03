@@ -2,14 +2,26 @@ package com.RIS.Mojirecepti.dto;
 
 
 import com.RIS.Mojirecepti.entity.MealType;
+import jakarta.validation.constraints.NotEmpty;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealPlanRequest {
-
-    private LocalDate datum;  // The date for the meal plan
+    @NotNull
+    private LocalDate datum;  // The date for the meal
+    @NotEmpty
     private List<MealTypeRecipe> recipes;  // List of recipes with meal types
+
+    public <E> MealPlanRequest(String date, ArrayList<E> es) {
+    }
+
+    public MealPlanRequest() {
+
+    }
 
     // Getters and setters
 
@@ -33,6 +45,11 @@ public class MealPlanRequest {
     public static class MealTypeRecipe {
         private String mealType;  // Meal type (e.g., Zajtrk, Kosilo, Večerja)
         private int recipeId;     // Recipe ID
+
+        public MealTypeRecipe(String mealType, int recipeId) {
+            this.mealType = mealType;
+            this.recipeId = recipeId;
+        }
 
         // Getters and setters
         public String getMealType() {

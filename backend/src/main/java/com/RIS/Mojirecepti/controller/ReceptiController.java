@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.RIS.Mojirecepti.entity.Recepti;
 import com.RIS.Mojirecepti.repository.ReceptiRepository;
+import org.springframework.web.server.ResponseStatusException;
+
 //matej
 @RestController
 @RequestMapping("/recepti")
@@ -47,7 +50,6 @@ public class ReceptiController {
     public List<Recepti> getReceptiByTip(@PathVariable Recepti.Tip tip) {
         return receptiRepository.findByTip(tip);
     }
-
     @PostMapping
     public Recepti createRecept(
             @RequestParam("naziv") String naziv,
@@ -72,9 +74,16 @@ public class ReceptiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Recepti> updateRecept(@PathVariable Long id, @RequestBody Recepti receptiDetails) {
+        // Look for the recipe by ID
         Recepti recepti = receptiRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Recept not found with id: " + id));
+                .orElse(null);  // Use 'null' instead of throwing an exception
 
+        // If the recipe is not found, return 404 Not Found
+        if (recepti == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // Proceed with updating the recipe if found
         recepti.setNaziv(receptiDetails.getNaziv());
         recepti.setSestavine(receptiDetails.getSestavine());
         recepti.setOpis(receptiDetails.getOpis());

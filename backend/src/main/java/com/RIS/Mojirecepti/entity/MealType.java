@@ -4,4 +4,5 @@ public enum MealType {
 
         ZAJTRK, KOSILO, VEČERJA
 
+
 }

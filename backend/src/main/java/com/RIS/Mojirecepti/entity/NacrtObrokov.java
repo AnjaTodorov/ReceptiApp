@@ -3,6 +3,7 @@ package com.RIS.Mojirecepti.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Table(name = "Nacrt_obrokov")
 
@@ -21,6 +22,11 @@ public class NacrtObrokov {
 
     // Parameterized constructor
     public NacrtObrokov(LocalDate datum) {
+        this.datum = datum;
+    }
+
+    public NacrtObrokov(int idNacrtObrokov, LocalDate datum) {
+        this.idNacrtObrokov = idNacrtObrokov;
         this.datum = datum;
     }
 
@@ -48,4 +54,6 @@ public class NacrtObrokov {
                 ", datum=" + datum +
                 '}';
     }
+
+
 }

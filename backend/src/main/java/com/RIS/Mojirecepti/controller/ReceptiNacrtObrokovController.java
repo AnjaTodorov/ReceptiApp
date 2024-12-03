@@ -9,7 +9,9 @@ import com.RIS.Mojirecepti.dto.MealPlanRequest;
 import com.RIS.Mojirecepti.repository.NacrtObrokovRepository;
 import com.RIS.Mojirecepti.repository.ReceptiNacrtObrokovRepository;
 import com.RIS.Mojirecepti.repository.ReceptiRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.RIS.Mojirecepti.dto.MealPlanResponse;
@@ -62,12 +64,6 @@ public class ReceptiNacrtObrokovController {
         }).collect(Collectors.toList());
     }
 
-    // Delete a meal plan by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMealPlan(@PathVariable Long id) {
-        receptiNacrtObrokovRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
 
     // Check if a meal plan already exists for the given date
     @GetMapping("/check")
@@ -79,7 +75,7 @@ public class ReceptiNacrtObrokovController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createMealPlan(@RequestBody MealPlanRequest request) {
+    public ResponseEntity<Map<String, Object>> createMealPlan(@RequestBody @Valid MealPlanRequest request) {
         // Create a new NacrtObrokov (meal plan) with the date
         NacrtObrokov nacrtObrokov = new NacrtObrokov();
         nacrtObrokov.setDatum(request.getDatum());  // Set the date of the meal plan
@@ -89,7 +85,14 @@ public class ReceptiNacrtObrokovController {
         for (MealPlanRequest.MealTypeRecipe mealTypeRecipe : request.getRecipes()) {
             // Find the recipe by ID
             Recepti recepti = receptiRepository.findById(mealTypeRecipe.getRecipeId())
-                    .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + mealTypeRecipe.getRecipeId()));
+                    .orElse(null); // Get the recipe or null if not found
+
+            if (recepti == null) {
+                // Return a 404 Not Found with a custom error message if recipe is not found
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Recipe not found with id: " + mealTypeRecipe.getRecipeId());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);  // Return 404 with error message
+            }
 
             // Create a new link between the recipe and the meal plan
             ReceptiNacrtObrokov receptiNacrtObrokov = new ReceptiNacrtObrokov();
@@ -108,6 +111,7 @@ public class ReceptiNacrtObrokovController {
 
         return ResponseEntity.ok(response);  // Return the response as JSON
     }
+
     @GetMapping("/meal-plan/{id}/ingredients")
     public List<String> getIngredientsByMealPlan(@PathVariable("id") int nacrtObrokovId) {
         List<ReceptiNacrtObrokov> receptiNacrtObrokovList = receptiNacrtObrokovRepository.findByNacrtObrokovId(nacrtObrokovId);
