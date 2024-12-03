@@ -15,6 +15,7 @@
 - 📄 [Pregled](#-pregled)
 - 🌟 [Vizija](#-vizija)
 - 📚 [Besednjak](#-besednjak)
+- 🆕 [Dodana funkcionalnost](#-dodana-funkcionalnost)
 - ✏️ [DPU](#%EF%B8%8F-dpu)
 - ⭐ [Značilnosti](#--značilnosti)
 - ⚙️ [Tehnološki sklad](#%EF%B8%8F-tehnološki-sklad)
@@ -82,6 +83,30 @@ V tem razdelku bomo predstavili ključne termine, uporabljene v projektu. Namen 
         </tr>
     </tbody>
 </table>
+
+## 🆕 Dodana funkcionalnost
+### Načrtovanje obrokov in nakupovalni seznam
+#### 1. Implementirana funkcionalnost
+Dodatna funkcionalnost omogoča uporabnikom, da iz receptov, ki so jih dodali, ustvarijo načrt obrokov (Meal Plan). Načrt obrokov vsebuje tri kategorije: zajtrk, kosilo in večerja. Poleg tega lahko uporabnik na podlagi sestavin iz načrta obrokov ustvari nakupovalni seznam.
+
+#### 2. Kako deluje nova funkcionalnost
+- **Ustvarjanje načrta obrokov**: Uporabnik lahko izbere recepte za zajtrk, kosilo in večerjo, ki jih je že dodal v aplikacijo in datum načrta. Ob ustvarjanju načrta obrokov se ta shrani in je viden v ločenem razdelku aplikacije.
+- **Ustvarjanje nakupovalnega seznama**: Ko je načrt obrokov ustvarjen, lahko uporabnik s klikom na ustrezno možnost pridobi seznam sestavin za izbrane obroke. Nakupovalni seznam združi količine enakih sestavin, da je seznam čim bolj pregleden in praktičen.
+
+#### 3. Preizkus nove funkcionalnosti
+- **Dostop do načrta obrokov**:
+  1. Odprite aplikacijo.
+  2. Dodajte recepte za zajtrk, kosilo in večerjo v skladu z običajnim postopkom.
+  3. Pojdite na razdelek "Načrt obrokov" in izberite možnost "Ustvari načrt obrokov".
+  4. Izberite želene recepte za zajtrk, kosilo in večerjo, nato kliknite "Potrdi".
+  5. Načrt obrokov bo shranjen in dostopen v seznamu obstoječih načrtov.
+
+- **Dostop do nakupovalnega seznama**:
+  1. Izberite načrt obrokov iz seznama obstoječih načrtov.
+  2. Kliknite na gumb "Ustvari nakupovalni seznam".
+  3. Prikazan bo seznam vseh sestavin, potrebnih za izbrane recepte, združenih po količinah.
+
+Nova funkcionalnost je namenjena lažjemu načrtovanju obrokov in organizaciji nakupov, kar uporabniku prihrani čas in izboljša uporabniško izkušnjo.
 
 ## ✏️ DPU
 <h3>Naziv: Moji Recepti </h3>
