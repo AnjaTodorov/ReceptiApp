@@ -437,15 +437,48 @@ CREATE DATABASE ReceptiDB;
 USE ReceptiDB;
 
 SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS Recepti_Nacrt_obrokov;
+DROP TABLE IF EXISTS Nacrt_obrokov;
+DROP TABLE IF EXISTS Sestavine;
 DROP TABLE IF EXISTS Recepti;
 
 CREATE TABLE Recepti (
     idRecepti INT AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(40) NOT NULL,
     slika VARCHAR(100) NOT NULL,
-    sestavine TEXT NOT NULL,
-    opis TEXT NOT NULL
+    tip ENUM('zajtrk', 'kosilo', 'večerja') NOT NULL,
+    opis TEXT NOT NULL,
+    osebe INT NOT NULL 
 );
+
+
+CREATE TABLE Sestavine (
+    idSestavina INT AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL,
+    kolicina DECIMAL(10, 2) NOT NULL,
+    enota ENUM('g', 'kg', 'ml', 'l', 'kos', 'žlica', 'čajna žlička', 'skodelica') NOT NULL,
+    TK_Recepti INT NOT NULL,
+    CONSTRAINT FK_Recepti_Sestavine FOREIGN KEY (TK_Recepti)
+        REFERENCES Recepti(idRecepti) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Nacrt_obrokov (
+    idNacrt_obrokov INT AUTO_INCREMENT PRIMARY KEY,
+    datum DATE DEFAULT (CURRENT_DATE + INTERVAL 1 DAY)
+);
+
+CREATE TABLE Recepti_Nacrt_obrokov (
+    idRecepti_Nacrt_obrokov INT AUTO_INCREMENT PRIMARY KEY,
+    TK_Recepti INT NOT NULL,
+    TK_Nacrt_obrokov INT NOT NULL,
+    meal_type ENUM('ZAJTRK', 'KOSILO', 'VEČERJA') NOT NULL,
+    CONSTRAINT FK_Recepti FOREIGN KEY (TK_Recepti)
+        REFERENCES Recepti(idRecepti) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Nacrt_obrokov FOREIGN KEY (TK_Nacrt_obrokov)
+        REFERENCES Nacrt_obrokov(idNacrt_obrokov) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT UNIQUE (TK_Nacrt_obrokov, meal_type)
+);
+
 ```
 ### Povezava Spring Boot z MySQL
 V vaši aplikaciji dodajte naslednje nastavitve v datoteko application.properties:
