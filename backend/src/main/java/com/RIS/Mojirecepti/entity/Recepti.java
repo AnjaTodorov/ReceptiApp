@@ -17,15 +17,15 @@ public class Recepti {
     @Column(name = "slika", nullable = false, length = 100)
     private String slika;
 
-    @Column(name = "sestavine", nullable = false, columnDefinition = "TEXT")
-    private String sestavine;
-
     @Column(name = "tip", nullable = false)
     @Enumerated(EnumType.STRING)
     private Tip tip;
 
     @Column(name = "opis", nullable = false, columnDefinition = "TEXT")
     private String opis;
+
+    @Column(name = "osebe", nullable = false)
+    private int osebe; // New column for number of people
 
     public enum Tip {
         zajtrk, kosilo, večerja
@@ -35,12 +35,12 @@ public class Recepti {
     public Recepti() {}
 
     // Parameterized constructor
-    public Recepti(String naziv, String slika, String sestavine, Tip tip, String opis) {
+    public Recepti(String naziv, String slika, Tip tip, String opis, int osebe) {
         this.naziv = naziv;
         this.slika = slika;
-        this.sestavine = sestavine;
         this.tip = tip;
         this.opis = opis;
+        this.osebe = osebe;
     }
 
     // Getters and setters
@@ -68,14 +68,6 @@ public class Recepti {
         this.slika = slika;
     }
 
-    public String getSestavine() {
-        return sestavine;
-    }
-
-    public void setSestavine(String sestavine) {
-        this.sestavine = sestavine;
-    }
-
     public Tip getTip() {
         return tip;
     }
@@ -92,15 +84,23 @@ public class Recepti {
         this.opis = opis;
     }
 
+    public int getOsebe() {
+        return osebe;
+    }
+
+    public void setOsebe(int osebe) {
+        this.osebe = osebe;
+    }
+
     @Override
     public String toString() {
         return "Recepti{" +
                 "idRecepti=" + idRecepti +
                 ", naziv='" + naziv + '\'' +
                 ", slika='" + slika + '\'' +
-                ", sestavine='" + sestavine + '\'' +
                 ", tip=" + tip +
                 ", opis='" + opis + '\'' +
+                ", osebe=" + osebe +
                 '}';
     }
 }

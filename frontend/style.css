@@ -1052,3 +1052,29 @@ button:hover {
 .popup-content button:hover {
   background-color: #35a013;
 }
+#ingredientsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.ingredient-tag {
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    padding: 3px 3px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.ingredient-tag button {
+    background: none;
+    border: none;
+    color: rgb(0, 255, 42);
+    font-weight: bold;
+    cursor: pointer;
+}

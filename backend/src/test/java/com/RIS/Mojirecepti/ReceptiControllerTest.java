@@ -47,7 +47,6 @@ public class ReceptiControllerTest {
 
         Recepti newRecipe = new Recepti();
         newRecipe.setNaziv("Test Recipe");
-        newRecipe.setSestavine("Ingredient 1, Ingredient 2");
         newRecipe.setOpis("Test Description");
         newRecipe.setTip(Recepti.Tip.zajtrk);
         newRecipe.setSlika("image.jpg");
@@ -89,7 +88,6 @@ public class ReceptiControllerTest {
 
         Recepti existingRecipe = new Recepti();
         existingRecipe.setNaziv("Recipe to Delete");
-        existingRecipe.setSestavine("Ingredients");
         existingRecipe.setOpis("Recipe description");
         existingRecipe.setTip(Recepti.Tip.zajtrk);
 
@@ -128,7 +126,6 @@ public class ReceptiControllerTest {
 
         Recepti existingRecipe = new Recepti();
         existingRecipe.setNaziv("Old Recipe");
-        existingRecipe.setSestavine("Ingredient 1");
         existingRecipe.setOpis("Old Description");
         existingRecipe.setTip(Recepti.Tip.zajtrk);
 
@@ -136,7 +133,6 @@ public class ReceptiControllerTest {
 
         Recepti updatedRecipe = new Recepti();
         updatedRecipe.setNaziv("Updated Recipe");
-        updatedRecipe.setSestavine("Updated Ingredient 1, Ingredient 2");
         updatedRecipe.setOpis("Updated Description");
         updatedRecipe.setTip(Recepti.Tip.zajtrk);
 

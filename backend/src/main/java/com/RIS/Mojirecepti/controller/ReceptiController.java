@@ -7,23 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.RIS.Mojirecepti.entity.Recepti;
 import com.RIS.Mojirecepti.repository.ReceptiRepository;
-import org.springframework.web.server.ResponseStatusException;
 
-//matej
+// Matej
 @RestController
 @RequestMapping("/recepti")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -50,12 +40,13 @@ public class ReceptiController {
     public List<Recepti> getReceptiByTip(@PathVariable Recepti.Tip tip) {
         return receptiRepository.findByTip(tip);
     }
+
     @PostMapping
     public Recepti createRecept(
             @RequestParam("naziv") String naziv,
-            @RequestParam("sestavine") String sestavine,
             @RequestParam("opis") String opis,
             @RequestParam("tip") Recepti.Tip tip,
+            @RequestParam("osebe") int osebe,
             @RequestParam("picture") MultipartFile picture
     ) throws IOException {
         String pictureFileName = picture.getOriginalFilename();
@@ -65,29 +56,29 @@ public class ReceptiController {
         Recepti recepti = new Recepti();
         recepti.setNaziv(naziv);
         recepti.setSlika(pictureFileName);
-        recepti.setSestavine(sestavine);
         recepti.setOpis(opis);
         recepti.setTip(tip);
+        recepti.setOsebe(osebe); // Set the number of people
 
-        return receptiRepository.save(recepti);
+        return receptiRepository.save(recepti); // Return saved recipe with ID
     }
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Recepti> updateRecept(@PathVariable Long id, @RequestBody Recepti receptiDetails) {
-        // Look for the recipe by ID
         Recepti recepti = receptiRepository.findById(id)
-                .orElse(null);  // Use 'null' instead of throwing an exception
+                .orElse(null);
 
-        // If the recipe is not found, return 404 Not Found
         if (recepti == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // Proceed with updating the recipe if found
         recepti.setNaziv(receptiDetails.getNaziv());
-        recepti.setSestavine(receptiDetails.getSestavine());
         recepti.setOpis(receptiDetails.getOpis());
         recepti.setTip(receptiDetails.getTip());
+        recepti.setOsebe(receptiDetails.getOsebe()); // Update the number of people
 
         Recepti updatedRecepti = receptiRepository.save(recepti);
         return ResponseEntity.ok(updatedRecepti);
