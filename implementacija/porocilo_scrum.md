@@ -1,15 +1,14 @@
-# Nalogi
+| Task Name                                               | Description                                                                                                                                                                     | Story Points |
+|---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| **Posodobitev backenda za generiranje nakupovalnega seznama** | Posodobitev backenda za generiranje nakupovalnega seznama, kjer bo sistem omogočal enostavno generiranje seznama sestavin za nakup glede na recept. Backend bo omogočal pridobivanje vseh potrebnih podatkov za ustvarjanje seznamov in sinhronizacijo s podatki na uporabniškem vmesniku. | 5            |
+| **Testiranje in validacija**                            | Testiranje in validacija vseh funkcionalnosti sistema, vključno z backendom in frontendom, da se zagotovi, da so vsi podatki pravilno obdelani, shranjeni in prikazani uporabniku. Testi bodo vključevali preverjanje iskalnih funkcionalnosti, generiranje nakupovalnega seznama ter interakcijo uporabnika z uporabniškim vmesnikom. | 8            |
+| **Dokumentacija**                                        | Priprava celovite dokumentacije za projekt, ki vključuje opis funkcionalnosti, tehnične zahteve, nastavitve sistema in navodila za uporabo. Dokumentacija bo prav tako zajemala vse potrebne informacije za kasnejše nadgradnje in vzdrževanje sistema. | 3            |
+| **Prikaz nakupovalnega seznama v UI (posodobitev frontenda)** | Posodobitev uporabniškega vmesnika za prikaz nakupovalnega seznama, ki bo uporabnikom omogočala enostaven pregled vseh sestavin, potrebnih za nakup. Ta naloga vključuje oblikovanje in integracijo uporabniškega vmesnika z backendom za prikaz seznama na osnovi izbranih receptov. | 5            |
+| **Povezava frontend-backend**                            | Izvedba povezave med frontend aplikacijo in backendom, da bi omogočili pretok podatkov med obema sistemoma. To vključuje klicanje API-jev, prejemanje podatkov o receptih in sestavinah ter njihovo pravilno prikazovanje na uporabniškem vmesniku. | 8            |
+| **Dodaj stolpec osebe v tabelo Recepti**                 | Dodajanje stolpca "osebe" v tabelo receptov, da se omogoči shranjevanje števila oseb za vsak recept. To bo omogočilo prilagoditev količin sestavin glede na število oseb, ki jih recept streže. | 3            |
+| **Preoblikovanje sestavin v tabelo**                     | Preoblikovanje shranjevanja sestavin, tako da bodo te shranjene v tabeli in povezane z recepti, kar bo omogočilo enostavno upravljanje sestavin, njihovo posodabljanje in povezovanje z recepti v sistemu. | 5            |
+| **Posodobitev backenda za tabelo Recepti**               | Posodobitev backenda, da omogoči upravljanje s tabelo receptov. To vključuje dodajanje novih receptov, urejanje obstoječih receptov, brisanje in iskanje receptov po različnih kriterijih. | 8            |
+| **Posodobitev backenda za tabelo Sestavine**             | Posodobitev backenda, da omogoči upravljanje s tabelo sestavin, vključno z dodajanjem novih sestavin, posodabljanjem obstoječih in njihovim povezovanjem z recepti. | 8            |
+| **Posodobitev UI za ustvarjanje receptov - dodajanje Stevila oseb, dodajanje sestavin** | Posodobitev uporabniškega vmesnika za ustvarjanje receptov z dodajanjem možnosti za vnos števila oseb in sestavin. Uporabnik bo lahko vnesel število oseb, na osnovi tega pa bodo avtomatsko prilagojene količine sestavin v receptu. | 8            |
 
-| **#** | **Naloga**                             | **Opis**                                                        | **Story Points (SP)** |
-|-------|-------------------------------------|------------------------------------------------------------------------|------------------------|
-| **1** | **Dodaj stolpec `osebe` v tabelo `Recepti`** | Posodobi tabelo `Recepti`, da vključuje stolpec za število oseb.       | 3 SP                  |
-| **2** | **Preoblikovanje sestavin v tabelo** | Ustvari novo tabelo za sestavine, ki vključuje ime, količino in enoto. | 5 SP                  |
-| **3** | **Posodobitev backenda za tabelo `Recepti`** | Posodobi logiko in razrede za delo s spremenjeno strukturo `Recepti`.  | 5 SP                  |
-| **4** | **Posodobitev backenda za tabelo `Sestavine`** | Dodaj podporo za novo tabelo `Sestavine` v API in backend.             | 8 SP                  |
-| **5** | **Generiranje nakupovalnega seznama** | Implementiraj logiko za združevanje in generiranje seznama nakupov.    | 8 SP                  |
-| **6** | **Menjava uporabniškega vmesnika**   | Posodobi UI za prikaz in vnos novih podatkov (`osebe`, sestavine).     | 5 SP                  |
-| **7** | **Povezava frontend-backend**        | Implementiraj povezavo med UI in API za nove funkcionalnosti.          | 8 SP                  |
-| **8** | **Testiranje in validacija**         | Testiraj vse spremembe, vključno z generiranjem seznamov in API klici. | 5 SP                  |
-| **9** | **Dokumentacija**                    | Posodobi dokumentacijo projekta za nove funkcionalnosti.               | 3 SP                  |
-
-**Total Story Points: 50 SP**
+**Total Story Points: 60 SP**
