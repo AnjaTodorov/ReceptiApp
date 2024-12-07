@@ -19,18 +19,17 @@ Po izbiri uporabniške zgodbe smo nalogo razdelili na manjše, izvedljive naloge
 
 | **Task Name** | **Description** | **Story Points** |
 |---------------|-----------------|------------------|
-| Posodobitev frontenda (JS) za generiranje nakupuvalni seznam | Posodobitev backenda za generiranje nakupovalnega seznama, ki bo omogočil generiranje seznamov sestavin za nakup glede na recept. | 5 |
-| Testiranje in validacija | Preverjanje delovanja funkcionalnosti sistema, vključno z backendom in frontendom. | 3 |
-| Dokumentacija | Priprava dokumentacije za projekt, ki vključuje opis funkcionalnosti, tehnične zahteve, nastavitve sistema in navodila za uporabo. | 3 |
+| Posodobitev frontenda (JS) za generiranje nakupuvalni seznam | Posodobitev backenda za generiranje nakupovalnega seznama, ki bo omogočil generiranje seznamov sestavin za nakup glede na recept. | 3 |
+| Testiranje in validacija | Preverjanje delovanja funkcionalnosti sistema, vključno z backendom in frontendom. | 2 |
+| Dokumentacija | Priprava dokumentacije za projekt, ki vključuje opis funkcionalnosti, tehnične zahteve, nastavitve sistema in navodila za uporabo. | 2 |
 | Prikaz izračunanih sestavin glede na izbrano število porcij v UI (frontend) | Posodobitev uporabniškega vmesnika za prikaz nakupovalnega seznama, ki bo omogočal pregled sestavin za nakup. | 5 |
-| Povezava frontend-backend | Izvedba povezave med frontend aplikacijo in backendom, da bi omogočili pretok podatkov med obema sistemoma. | 8 |
-| Dodaj stolpec osebe/porcij v tabelo Recepti | Dodajanje stolpca "osebe" v tabelo receptov, da se omogoči prilagoditev količin sestavin glede na število oseb. | 3 |
-| Preoblikovanje sestavin v tabelo | Preoblikovanje shranjevanja sestavin, da bodo te shranjene v tabeli in povezane z recepti. | 5 |
-| Posodobitev backenda za tabelo Recepti | Posodobitev backenda za upravljanje s tabelo receptov. | 8 |
-| Posodobitev backenda za tabelo Sestavine | Posodobitev backenda za upravljanje s tabelo sestavin. | 8 |
-| Posodobitev UI za ustvarjanje receptov - dodajanje število porcij, dodajanje sestavin | Posodobitev uporabniškega vmesnika za ustvarjanje receptov z možnostjo vnosa števila oseb in prilagoditve količin sestavin. | 8 |
+| Povezava frontend-backend | Izvedba povezave med frontend aplikacijo in backendom, da bi omogočili pretok podatkov med obema sistemoma. | 5 |
+| Dodaj stolpec osebe/porcij v tabelo Recepti | Dodajanje stolpca "osebe" v tabelo receptov, da se omogoči prilagoditev količin sestavin glede na število oseb. | 1 |
+| Preoblikovanje sestavin v tabelo | Preoblikovanje shranjevanja sestavin, da bodo te shranjene v tabeli in povezane z recepti. | 3 |
+| Posodobitev backenda za tabelo Recepti | Posodobitev backenda za upravljanje s tabelo receptov. | 5 |
+| Posodobitev backenda za tabelo Sestavine | Posodobitev backenda za upravljanje s tabelo sestavin. | 5 |
+| Posodobitev UI za ustvarjanje receptov - dodajanje število porcij, dodajanje sestavin | Posodobitev uporabniškega vmesnika za ustvarjanje receptov z možnostjo vnosa števila oseb in prilagoditve količin sestavin. | 3 |
 
-**Skupaj Story Points: 55 SP**
 
 ### Ocenjevanje nalog s pomočjo Planning Pokerja
 Vsako nalogo smo ocenili s pomočjo metode **Planning Poker**, kjer smo določili časovno zahtevnost nalog. Za ocenjevanje smo uporabili **story points**, ki so nam omogočili boljšo predstavo o obsegu nalog. 
