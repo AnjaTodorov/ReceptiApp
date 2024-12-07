@@ -320,9 +320,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
 document.addEventListener("DOMContentLoaded", loadRecipes);
 
 
-
-
-function filterRecipesWithUI(element) {
+async function filterRecipesWithUI(element) {
     const filterBox = element.querySelector('.filter-box');
     const isChecked = filterBox.classList.contains('checked'); // Check if the filter is already selected
     const filterType = element.getAttribute('data-tip'); // Get the filter type
@@ -336,52 +334,75 @@ function filterRecipesWithUI(element) {
         document.querySelectorAll('.filter-box').forEach(box => box.classList.remove('checked')); // Uncheck all other filters
         filterBox.classList.add('checked'); // Check the current filter
 
-        // Fetch and display filtered recipes
-        fetch(`http://localhost:8080/recepti/tip/${filterType}`)
-            .then(response => response.json())
-            .then(recipes => {
-                const recipeCardsContainer = document.getElementById('recipeCards');
-                recipeCardsContainer.innerHTML = ''; // Clear existing content
+        try {
+            // Fetch the filtered recipes
+            const response = await fetch(`http://localhost:8080/recepti/tip/${filterType}`);
+            const recipes = await response.json();
+            const recipeCardsContainer = document.getElementById('recipeCards');
+            recipeCardsContainer.innerHTML = ''; // Clear existing content
 
-                recipes.forEach(recipe => {
+            if (recipes.length > 0) {
+                // Loop through each recipe
+                for (const recipe of recipes) {
+                    // Fetch ingredients for the current recipe
+                    const ingredientsResponse = await fetch(`http://localhost:8080/sestavine/recepti/${recipe.idRecepti}`);
+                    const ingredients = await ingredientsResponse.json();
+                   // Create ingredientsText with naziv, kolicina, and enota
+                   const ingredientsText = ingredients.length > 0
+                   ? ingredients.map(ingredient => `${ingredient.naziv} ${ingredient.kolicina}${ingredient.enota.toLowerCase()}`).join(', ')
+                   : 'No ingredients available';
+
                     const card = `
-                    <div class="col-md-4">
-                    <div class="card border shadow-sm mb-4">
-                        <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
-                        <div class="card-body">
-                            <h5 class="card-title">${recipe.naziv}</h5>
+                        <div class="col-md-4">
+                            <div class="card border shadow-sm mb-4">
+                                <img class="card-img-top" src="sliki/${recipe.slika}" alt="${recipe.naziv}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${recipe.naziv}</h5>
+                                </div>
+                                <div class="card-footer" style="font-weight:100;">
+                                    <p class="text-muted">Vrsta obroka: <strong>${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</strong></p>
+                                </div>
+                                <div class="card-footer" style="font-weight:100;">
+                                    <p class="text-muted">
+                                        <i class="fas fa-utensils"></i> Število porcij: <strong>${recipe.osebe}</strong>
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <p class="card-text">${ingredientsText}</p> <!-- Display ingredients -->
+                                </div>
+                                <div class="card-footer">
+                                    <p class="text-muted">${recipe.opis}</p>
+                                </div>
+                                <div class="button-container">
+                                    <!-- Edit Button -->
+                                    <button class="circle-btn" onclick="editRecipe(${recipe.idRecepti})">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <!-- Delete Button -->
+                                    <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <!-- Grocery Shopping Button -->
+                                    <button class="circle-btn" onclick="openGroceryList(${recipe.idRecepti}, ${recipe.osebe})">
+                                        <i class="fas fa-calculator"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                        <p class="text-muted">Vrsta obroka: ${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</p>
-                    </div>
-                        <div class="card-footer">
-                        <p class="card-text">${recipe.sestavine}</p>
-                        </div>
-                       
-                        <div class="card-footer">
-                            <p class="text-muted">${recipe.opis}</p>
-                        </div>
-                        <div class="button-container">
-                            <!-- Edit Button -->
-                            <button class="circle-btn" onclick="editRecipe(${recipe.idRecepti})">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            <!-- Delete Button -->
-                            <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
                     `;
                     recipeCardsContainer.innerHTML += card;
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching filtered recipes:', error);
-            });
+                }
+            } else {
+                recipeCardsContainer.innerHTML = '<p>No recipes found for the selected filter.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching filtered recipes or ingredients:', error);
+            alert('An error occurred while fetching the recipes or ingredients.');
+        }
     }
 }
+
+
 
 // Global variables to store the current recipe information
 let currentRecipeId = null;
