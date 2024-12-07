@@ -143,25 +143,25 @@ async function loadRecipes() {
     try {
         const response = await fetch('http://localhost:8080/recepti');
         const recipes = await response.json();
-        
-        const recipeCardsContainer = document.getElementById('recipeCards');
-        recipeCardsContainer.innerHTML = '';  // Clear existing content if any
 
-        // Using 'for...of' loop to await async operations properly
+        const recipeCardsContainer = document.getElementById('recipeCards');
+        recipeCardsContainer.innerHTML = ''; // Clear existing content if any
+
         for (const recipe of recipes) {
             try {
                 // Fetch ingredients for each recipe
                 const ingredientsResponse = await fetch(`http://localhost:8080/sestavine/recepti/${recipe.idRecepti}`);
                 const ingredients = await ingredientsResponse.json();
 
-                // Check if ingredients are found
-                if (!ingredients || ingredients.length === 0) {
-                    console.log(`No ingredients found for recipe ${recipe.idRecepti}`);
-                }
+                // Attach the ingredients array to the recipe object
+                recipe.ingredients = ingredients.map(ingredient => ({
+                    name: ingredient.naziv,
+                    quantity: ingredient.kolicina,
+                    unit: ingredient.enota.toLowerCase()
+                }));
 
-                // Format ingredients as "Milk 200ml, Sugar 100g"
-                const ingredientsText = ingredients.map(ingredient => {
-                    return `${ingredient.naziv} ${ingredient.kolicina} ${ingredient.enota.toLowerCase()}`;
+                const ingredientsText = recipe.ingredients.map(ingredient => {
+                    return `${ingredient.name} ${ingredient.quantity} ${ingredient.unit}`;
                 }).join(', ');
 
                 // Create the card for each recipe
@@ -172,8 +172,13 @@ async function loadRecipes() {
                             <div class="card-body">
                                 <h5 class="card-title">${recipe.naziv}</h5>
                             </div>
-                            <div class="card-footer">
-                                <p class="text-muted">Vrsta obroka: ${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</p>
+                            <div class="card-footer" style="font-weight:100;">
+                                <p class="text-muted">Vrsta obroka: <strong>${recipe.tip.charAt(0).toUpperCase() + recipe.tip.slice(1).toLowerCase()}</strong></p>
+                            </div>
+                            <div class="card-footer" style="font-weight:100;">
+                                <p class="text-muted">
+                                    <i class="fas fa-utensils"></i> Število porcij: <strong>${recipe.osebe}</strong>
+                                </p>
                             </div>
                             <div class="card-footer">
                                 <p class="card-text">${ingredientsText}</p> <!-- Display ingredients -->
@@ -189,6 +194,10 @@ async function loadRecipes() {
                                 <!-- Delete Button -->
                                 <button class="circle-btn" onclick="deleteRecipe(${recipe.idRecepti})">
                                     <i class="fas fa-trash"></i>
+                                </button>
+                                <!-- Grocery Shopping Button -->
+                                <button class="circle-btn" onclick="openGroceryList(${recipe.idRecepti}, ${recipe.osebe})">
+                                <i class="fas fa-calculator"></i>
                                 </button>
                             </div>
                         </div>
@@ -373,3 +382,126 @@ function filterRecipesWithUI(element) {
             });
     }
 }
+
+// Global variables to store the current recipe information
+let currentRecipeId = null;
+let currentOriginalPeople = null;
+
+// Function to open the grocery modal and set the number of servings
+function openGroceryList(recipeId, originalPeople) {
+    // Set the original number of people in the modal
+    document.getElementById("originalPeople").textContent = originalPeople;
+    document.getElementById("groceryModal").style.display = "block";
+    
+    // Store the original recipe info in global variables
+    currentRecipeId = recipeId;
+    currentOriginalPeople = originalPeople;
+    
+    // Reset the grocery list when the modal is opened
+    document.getElementById("groceryList").innerHTML = '';
+}
+
+// Function to fetch recipe details from the backend (basic recipe info)
+async function fetchRecipeDetails(recipeId) {
+    try {
+        const response = await fetch(`http://localhost:8080/recepti/${recipeId}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch recipe details');
+        }
+        
+        const recipe = await response.json();
+        console.log('Fetched recipe details:', recipe);
+        
+        // Assuming recipe contains `osebe` (the number of people the recipe is for)
+        if (!recipe || typeof recipe.osebe !== 'number') {
+            throw new Error('Invalid recipe data');
+        }
+
+        return recipe.osebe; // Return the number of people (osebe)
+    } catch (error) {
+        console.error('Error fetching recipe details:', error);
+        alert("Napaka pri nalaganju recepta.");
+        return null;
+    }
+}
+
+// Function to fetch ingredients for a given recipe
+async function fetchRecipeIngredients(recipeId) {
+    try {
+        const response = await fetch(`http://localhost:8080/sestavine/recepti/${recipeId}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch ingredients');
+        }
+        
+        const ingredients = await response.json();
+        console.log('Fetched ingredients:', ingredients);
+        
+        if (!Array.isArray(ingredients)) {
+            throw new Error('Ingredients not found or invalid structure');
+        }
+
+        return ingredients; // Return the ingredients array
+    } catch (error) {
+        console.error('Error fetching ingredients:', error);
+        alert("Napaka pri nalaganju sestavin.");
+        return []; // Return an empty array in case of an error
+    }
+}
+
+// Function to calculate and update the grocery list
+async function calculateGroceryList() {
+    const newPeople = parseInt(document.getElementById("newPeople").value);
+    
+    if (isNaN(newPeople) || newPeople <= 0) {
+        alert("Prosim, vnesite veljavno število porcij.");
+        return;
+    }
+    
+    // Fetch the recipe details to get the base number of people (osebe)
+    const originalPeople = await fetchRecipeDetails(currentRecipeId);
+    
+    if (!originalPeople) {
+        return; // If the recipe details couldn't be fetched, do not proceed
+    }
+    
+    // Calculate the scale factor based on the number of people
+    const scaleFactor = newPeople / originalPeople;
+    
+    // Fetch the ingredients for the recipe
+    const ingredients = await fetchRecipeIngredients(currentRecipeId);
+    
+    // Check if ingredients is a valid array
+    if (!Array.isArray(ingredients) || ingredients.length === 0) {
+        console.error('No ingredients found for recipe ID:', currentRecipeId);
+        return; // Do not proceed if no ingredients are found
+    }
+
+    // Scale the ingredients based on the number of people
+    const updatedIngredients = ingredients.map(ingredient => ({
+        name: ingredient.naziv,  // Ingredient name
+        quantity: ingredient.kolicina * scaleFactor,  // Adjusted quantity
+        unit: ingredient.enota   // Ingredient unit
+    }));
+
+    // Display the updated grocery list in the modal
+    let groceryListHTML = '<h3>Potrebne sestavine:</h3>';
+    updatedIngredients.forEach(ingredient => {
+        groceryListHTML += `
+        <p>${ingredient.name}: <strong> ${ingredient.quantity.toFixed(0)}${ingredient.unit.toLowerCase()}</strong></p>
+        `;
+    });
+
+    document.getElementById("groceryList").innerHTML = groceryListHTML;
+}
+
+// Event listener for calculating the grocery list
+document.getElementById("calculateGrocery").addEventListener("click", calculateGroceryList);
+
+// Close the grocery modal
+document.getElementById("groceryClose").addEventListener("click", function() {
+    document.getElementById("groceryModal").style.display = "none";
+    location.reload();
+    
+});

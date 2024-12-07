@@ -143,6 +143,20 @@
     </div>
 </div>
 
+<!-- Modal for Grocery Shopping -->
+<div id="groceryModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="groceryClose">&times;</span>
+        <h2>Natančno izračunajte potrebne sestavine <img src="sliki/ingredients.png" alt="" style="width: 30px; height: 30px;"></h2>
+        <p>Recept je prvotno pripravljen za <strong><span id="originalPeople"></span> </strong> porcij.</p>
+        <label for="newPeople">Število porcij <i class="fas fa-utensils"> :</i></label>
+        <input type="number" id="newPeople" name="newPeople" min="1" required>
+        <button type="button" id="calculateGrocery">Izračunaj</button>
+        <div id="groceryList" style="margin-top: 20px;">
+            <!-- The updated ingredient list will be displayed here -->
+        </div>
+    </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
