@@ -597,7 +597,32 @@ async function fetchRecipeIngredients(recipeId) {
     }
 }
 
-// Function to calculate and update the grocery list
+// Function to fetch nutritional values for a given recipe
+async function fetchRecipeNutritionalValues(recipeId) {
+    try {
+        const response = await fetch(`http://localhost:8080/hranilne-vrednosti/recepti/${recipeId}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch nutritional values');
+        }
+        
+        const nutritionalValues = await response.json();
+        console.log('Fetched nutritional values:', nutritionalValues);
+        
+        if (!Array.isArray(nutritionalValues)) {
+            throw new Error('Nutritional values not found or invalid structure');
+        }
+
+        return nutritionalValues; // Return the nutritional values array
+    } catch (error) {
+        console.error('Error fetching nutritional values:', error);
+        alert("Napaka pri nalaganju hranilnih vrednosti.");
+        return []; // Return an empty array in case of an error
+    }
+}
+
+
+// Function to calculate and update the grocery list and nutritional values
 async function calculateGroceryList() {
     const newPeople = parseInt(document.getElementById("newPeople").value);
     
@@ -606,41 +631,66 @@ async function calculateGroceryList() {
         return;
     }
     
-    // Fetch the recipe details to get the base number of people (osebe)
-    const originalPeople = await fetchRecipeDetails(currentRecipeId);
-    
-    if (!originalPeople) {
-        return; // If the recipe details couldn't be fetched, do not proceed
-    }
-    
-    // Calculate the scale factor based on the number of people
-    const scaleFactor = newPeople / originalPeople;
-    
-    // Fetch the ingredients for the recipe
-    const ingredients = await fetchRecipeIngredients(currentRecipeId);
-    
-    // Check if ingredients is a valid array
-    if (!Array.isArray(ingredients) || ingredients.length === 0) {
-        console.error('No ingredients found for recipe ID:', currentRecipeId);
-        return; // Do not proceed if no ingredients are found
-    }
+    try {
+        // Fetch the recipe details to get the base number of people (osebe)
+        const originalPeople = await fetchRecipeDetails(currentRecipeId);
+        if (!originalPeople) {
+            return; // If the recipe details couldn't be fetched, do not proceed
+        }
+        
+        // Calculate the scale factor based on the number of people
+        const scaleFactor = newPeople / originalPeople;
 
-    // Scale the ingredients based on the number of people
-    const updatedIngredients = ingredients.map(ingredient => ({
-        name: ingredient.naziv,  // Ingredient name
-        quantity: ingredient.kolicina * scaleFactor,  // Adjusted quantity
-        unit: ingredient.enota   // Ingredient unit
-    }));
+        // Fetch the ingredients for the recipe
+        const ingredients = await fetchRecipeIngredients(currentRecipeId);
+        if (!Array.isArray(ingredients) || ingredients.length === 0) {
+            console.error('No ingredients found for recipe ID:', currentRecipeId);
+            return; // Do not proceed if no ingredients are found
+        }
 
-    // Display the updated grocery list in the modal
-    let groceryListHTML = '<h3>Potrebne sestavine:</h3>';
-    updatedIngredients.forEach(ingredient => {
+        // Fetch the nutritional values for the recipe
+        const nutritionalValues = await fetchRecipeNutritionalValues(currentRecipeId);
+        if (!Array.isArray(nutritionalValues) || nutritionalValues.length === 0) {
+            console.error('No nutritional values found for recipe ID:', currentRecipeId);
+            return; // Do not proceed if no nutritional values are found
+        }
+
+        // Scale the ingredients based on the number of people
+        const updatedIngredients = ingredients.map(ingredient => ({
+            name: ingredient.naziv,  // Ingredient name
+            quantity: ingredient.kolicina * scaleFactor,  // Adjusted quantity
+            unit: ingredient.enota   // Ingredient unit
+        }));
+
+        // Scale the nutritional values based on the number of people
+        const updatedNutritionalValues = nutritionalValues.map(value => ({
+            name: value.naziv,  // Nutrient name (e.g., Protein, Sugar)
+            amount: value.kolicina * scaleFactor,  // Adjusted amount
+            unit: value.enota ? value.enota.toLowerCase() : ''  // Safely handle the unit
+        }));
+
+        // Display the updated grocery list in the modal
+        let groceryListHTML = '<h3>Potrebne sestavine:</h3>';
+        updatedIngredients.forEach(ingredient => {
+            groceryListHTML += `
+            <p>${ingredient.name}: <strong>${ingredient.quantity.toFixed(0)} ${ingredient.unit.toLowerCase()}</strong></p>
+            `;
+        });
+
+        // Display the updated nutritional values in the modal
+        groceryListHTML += '<h3>Hranilne vrednosti:</h3>';
+        updatedNutritionalValues.forEach(value => {
+        const unit = value.unit === 'kj' ? 'kJ' : value.unit; // Capitalize 'kJ'
         groceryListHTML += `
-        <p>${ingredient.name}: <strong> ${ingredient.quantity.toFixed(0)}${ingredient.unit.toLowerCase()}</strong></p>
+        <p>${value.name}: <strong>${value.amount.toFixed(2)} ${unit}</strong></p>
         `;
     });
 
-    document.getElementById("groceryList").innerHTML = groceryListHTML;
+        document.getElementById("groceryList").innerHTML = groceryListHTML;
+    } catch (error) {
+        console.error('Error in calculateGroceryList:', error);
+        alert("Napaka pri izračunu. Prosim poskusite znova.");
+    }
 }
 
 // Event listener for calculating the grocery list
@@ -650,5 +700,4 @@ document.getElementById("calculateGrocery").addEventListener("click", calculateG
 document.getElementById("groceryClose").addEventListener("click", function() {
     document.getElementById("groceryModal").style.display = "none";
     location.reload();
-    
 });
