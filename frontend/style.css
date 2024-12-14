@@ -344,13 +344,13 @@ ion-icon {
 
 .modal-contentt {
   background-color: #f4f4f4;
-  margin-left: 750px;
-  margin-right: 750px;
+  margin-left: 500px;
+  margin-right: 500px;
   margin-top: 90px;
   margin-bottom: 50px;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  width: 900px;
 }
 
 .close {
@@ -1089,4 +1089,55 @@ button:hover {
     color: rgb(0, 255, 42);
     font-weight: bold;
     cursor: pointer;
+}
+
+
+
+.nutritional-tag {
+  background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    padding: 3px 3px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.nutritional-tag button {
+  background: none;
+  border: none;
+  color: rgb(0, 255, 42);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#nutriotinalValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+
+.nutritional-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  /*display: none; /* Initially hidden */
+}
+
+.popup-content {
+  text-align: center;
+}
+
+button {
+  margin-top: 10px;
 }

@@ -1,6 +1,7 @@
 const modal = document.getElementById("recipeModal");
 const openModalBtn = document.getElementById("openModalBtn");
 const closeModalBtn = document.querySelector(".close");
+
 document.getElementById('addIngredient').addEventListener('click', function () {
     const naziv = document.getElementById('ingredientNaziv').value.trim();
     const kolicina = document.getElementById('ingredientKolicina').value.trim();
@@ -52,6 +53,58 @@ function updateHiddenIngredients() {
     hiddenIngredients.value = ingredients.join(',');
 }
 
+// Handle nutritional values
+
+document.getElementById('addNutriotinalValues').addEventListener('click', function () {
+    const naziv = document.getElementById('nutriotinalValuesNaziv').value.trim();
+    const kolicina = document.getElementById('nutriotinalValuesKolicina').value.trim();
+    const enota = document.getElementById('nutritionalEnota').value;
+
+    if (!naziv || !kolicina || !enota) {
+        alert("Prosim, izpolnite vsa polja za hranilno vrednost.");
+        return;
+    }
+
+    const nutritionalValuesContainer = document.getElementById('nutriotinalValues');
+    const hiddenNutriotinal = document.getElementById('hiddenNutriotinal');
+
+    // Create a new nutritional value tag
+    const tag = document.createElement('div');
+    tag.classList.add('nutritional-tag');
+    tag.textContent = `${naziv} ${kolicina}${enota}`;
+
+    // Add a remove button to the tag
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '✖';
+    removeButton.classList.add('remove-tag');
+    tag.appendChild(removeButton);
+
+    // Append the tag to the container
+    nutritionalValuesContainer.appendChild(tag);
+
+    // Update the hidden input field
+    updateHiddenNutritionalValues();
+
+    // Clear input fields
+    document.getElementById('nutriotinalValuesNaziv').value = '';
+    document.getElementById('nutriotinalValuesKolicina').value = '';
+    document.getElementById('ingredientEnota').value = 'g';
+
+    // Handle tag removal
+    removeButton.addEventListener('click', function () {
+        tag.remove();
+        updateHiddenNutritionalValues();
+    });
+});
+
+function updateHiddenNutritionalValues() {
+    const nutritionalValuesContainer = document.getElementById('nutriotinalValues');
+    const hiddenNutriotinal = document.getElementById('hiddenNutriotinal');
+    const tags = nutritionalValuesContainer.querySelectorAll('.nutritional-tag');
+
+    const nutritionalValues = Array.from(tags).map(tag => tag.textContent.replace('✖', '').trim());
+    hiddenNutriotinal.value = nutritionalValues.join(',');
+}
 
 // Open the modal when "Dodaj Recept" is clicked
 openModalBtn.addEventListener("click", function() {
@@ -62,11 +115,12 @@ openModalBtn.addEventListener("click", function() {
 closeModalBtn.addEventListener("click", function() {
     modal.style.display = "none";
 });
+
 // Handle form submission for adding a recipe
 const recipeForm = document.getElementById("recipeForm");
 
 recipeForm.addEventListener("submit", async function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
     const formData = new FormData(recipeForm);
     const tip = document.getElementById("tip").value;
@@ -75,7 +129,7 @@ recipeForm.addEventListener("submit", async function(event) {
     // Extract and parse the ingredients from the hidden input
     const hiddenIngredients = document.getElementById("hiddenIngredients").value;
     const ingredientsArray = hiddenIngredients.split(',').map(ingredient => {
-        const match = ingredient.match(/(.*)\s(\d+\.?\d*)(\w+)/); // Parse format "Milk 200ml"
+        const match = ingredient.match(/(.*)\s(\d+\.?\d*)(\w+)/);
         if (match) {
             return {
                 naziv: match[1].trim(),
@@ -83,7 +137,20 @@ recipeForm.addEventListener("submit", async function(event) {
                 enota: match[3].trim(),
             };
         }
-    }).filter(Boolean); // Remove any null/undefined values
+    }).filter(Boolean);
+
+    // Extract and parse nutritional values from the hidden input
+    const hiddenNutriotinal = document.getElementById("hiddenNutriotinal").value;
+    const nutritionalArray = hiddenNutriotinal.split(',').map(nutritional => {
+        const match = nutritional.match(/(.*)\s(\d+\.?\d*)(\w+)/);
+        if (match) {
+            return {
+                naziv: match[1].trim(),
+                kolicina: parseFloat(match[2].trim()),
+                enota: match[3].trim(),
+            };
+        }
+    }).filter(Boolean);
 
     try {
         // Step 1: Submit the recipe
@@ -97,16 +164,16 @@ recipeForm.addEventListener("submit", async function(event) {
             return;
         }
 
-        const recipe = await recipeResponse.json(); // Retrieve the newly created recipe object
-        const idRecepti = recipe.idRecepti; // Store the recipe ID for ingredient submission
+        const recipe = await recipeResponse.json();
+        const idRecepti = recipe.idRecepti;
 
-        // Step 2: Submit each ingredient associated with the new recipe ID in parallel
+        // Step 2: Submit ingredients
         const ingredientPromises = ingredientsArray.map(ingredient => {
             const ingredientPayload = {
                 naziv: ingredient.naziv,
                 kolicina: ingredient.kolicina,
                 enota: ingredient.enota,
-                idRecepti: idRecepti, // Send the recipe ID to associate with the ingredient
+                idRecepti: idRecepti,
             };
 
             return fetch("http://localhost:8080/sestavine", {
@@ -115,28 +182,37 @@ recipeForm.addEventListener("submit", async function(event) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(ingredientPayload),
-            }).then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`Failed to add ingredient: ${text}`);
-                    });
-                }
-                return response.json(); // Handle successful ingredient response
             });
         });
 
-        // Wait for all ingredient submissions to complete
-        await Promise.all(ingredientPromises);
+        // Step 3: Submit nutritional values
+        const nutritionalPromises = nutritionalArray.map(nutritional => {
+            const nutritionalPayload = {
+                naziv: nutritional.naziv,
+                kolicina: nutritional.kolicina,
+                enota: nutritional.enota,
+                idRecepti: idRecepti,
+            };
 
-        alert("Recipe and ingredients added successfully!");
-        modal.style.display = "none"; // Close modal on success
-        loadRecipes(); // Optionally reload the recipe list via AJAX
+            return fetch("http://localhost:8080/hranilne-vrednosti", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(nutritionalPayload),
+            });
+        });
+
+        await Promise.all([...ingredientPromises, ...nutritionalPromises]);
+
+        alert("Recipe, ingredients, and nutritional values added successfully!");
+        modal.style.display = "none";
+        loadRecipes();
     } catch (error) {
-        console.error("Error adding recipe or ingredients:", error);
+        console.error("Error adding recipe or related data:", error);
         alert("An error occurred. Please try again.");
     }
 });
-
 
 
 async function loadRecipes() {
@@ -152,6 +228,18 @@ async function loadRecipes() {
                 // Fetch ingredients for each recipe
                 const ingredientsResponse = await fetch(`http://localhost:8080/sestavine/recepti/${recipe.idRecepti}`);
                 const ingredients = await ingredientsResponse.json();
+
+                const nutritionalValuesResponse = await fetch(`http://localhost:8080/hranilne-vrednosti/recepti/${recipe.idRecepti}`);
+                const nutritionalValues = await nutritionalValuesResponse.json();
+
+
+                const nutritionalText = nutritionalValues.map(value => {
+                    let unit = value.enota.toLowerCase(); // Default to lowercase
+                    if (unit === 'kj') {
+                        unit = 'kJ'; // Correct the unit to KJ (uppercase)
+                    }
+                    return `${value.naziv}: ${value.kolicina} ${unit}`;
+                }).join(', ');
 
                 // Attach the ingredients array to the recipe object
                 recipe.ingredients = ingredients.map(ingredient => ({
@@ -198,6 +286,9 @@ async function loadRecipes() {
                                 <!-- Grocery Shopping Button -->
                                 <button class="circle-btn" onclick="openGroceryList(${recipe.idRecepti}, ${recipe.osebe})">
                                 <i class="fas fa-calculator"></i>
+                                </button>
+                                <button class="circle-btn" onclick="toggleNutritionalPopup(${recipe.idRecepti}, '${nutritionalText}')">
+                                   <i class="fas fa-info-circle"></i> 
                                 </button>
                             </div>
                         </div>
@@ -401,6 +492,41 @@ async function filterRecipesWithUI(element) {
         }
     }
 }
+
+async function toggleNutritionalPopup(recipeId, nutritionalText) {
+    try {
+        // Fetch the recipe details to get the name (naziv)
+        const response = await fetch(`http://localhost:8080/recepti/${recipeId}`);
+        const recipe = await response.json();
+
+        // Check if there's already a nutritional popup for the given recipe
+        let popup = document.getElementById(`popup-${recipeId}`);
+
+        // If the popup exists, toggle visibility, otherwise create it
+        if (popup) {
+            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+        } else {
+            const popupContainer = document.createElement('div');
+            popupContainer.id = `popup-${recipeId}`;
+            popupContainer.className = 'nutritional-popup';
+
+            // Set the content of the popup
+            popupContainer.innerHTML = `
+                <div class="popup-content">
+                    <h3>Hranilne vrednosti za recept ${recipe.naziv}</h3>
+                    <p>${nutritionalText}</p>
+                    <button onclick="toggleNutritionalPopup(${recipeId})">Zapri</button> 
+                </div>
+            `;
+
+            // Append the popup to the body
+            document.body.appendChild(popupContainer);
+        }
+    } catch (error) {
+        console.error('Error fetching recipe details:', error);
+    }
+}
+
 
 
 

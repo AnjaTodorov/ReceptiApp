@@ -97,6 +97,24 @@
                 <button type="button" id="addIngredient">Dodaj Sestavino</button>
             </div>
             <input type="hidden" id="hiddenIngredients" name="sestavine">
+
+            <!-- Sestavine section -->
+            <label for="nutriotinalValues">Hranilne vrednosti:</label>
+            
+            <div id="nutriotinalValues">
+                <!-- Ingredients will appear here as small tags -->
+            </div>
+            <div style=" gap: 10px;">
+                <input type="text" id="nutriotinalValuesNaziv" placeholder="Naziv" >
+                <input type="number" step="0.01" id="nutriotinalValuesKolicina" placeholder="Količina">
+                <select id="nutritionalEnota" required>
+                    <option value="g">g</option>
+                    <option value="mg">mg</option>
+                    <option value="kJ">kJ</option>
+                </select>
+                <button type="button" id="addNutriotinalValues">Dodaj Hranilno vrednost</button>
+            </div>
+            <input type="hidden" id="hiddenNutriotinal" name="hranilneVrednosti">
             
             <label for="osebe">Stevilo porcij:</label>
     <input type="number" id="osebe" name="osebe" required />
