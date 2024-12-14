@@ -438,9 +438,11 @@ USE ReceptiDB;
 
 SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS Recepti_Nacrt_obrokov;
-DROP TABLE IF EXISTS Nacrt_obrokov;
 DROP TABLE IF EXISTS Sestavine;
+DROP TABLE IF EXISTS Hranilne_vrednosti;
+DROP TABLE IF EXISTS Nacrt_obrokov;
 DROP TABLE IF EXISTS Recepti;
+
 
 CREATE TABLE Recepti (
     idRecepti INT AUTO_INCREMENT PRIMARY KEY,
@@ -451,21 +453,34 @@ CREATE TABLE Recepti (
     osebe INT NOT NULL 
 );
 
+CREATE TABLE Nacrt_obrokov (
+    idNacrt_obrokov INT AUTO_INCREMENT PRIMARY KEY,
+    datum DATE DEFAULT (CURRENT_DATE + INTERVAL 1 DAY)
+);
+
+CREATE TABLE Hranilne_vrednosti (
+    idHranilne_vrednosti INT AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(50) NOT NULL,
+    kolicina DECIMAL(10, 2) NOT NULL,
+    enota ENUM('g', 'mg', 'kJ') NOT NULL,
+    TK_Recepti INT NOT NULL,
+    CONSTRAINT FK_Recepti_Hranilne_vrednosti FOREIGN KEY (TK_Recepti)
+        REFERENCES Recepti(idRecepti) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 
 CREATE TABLE Sestavine (
     idSestavina INT AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
     kolicina DECIMAL(10, 2) NOT NULL,
     enota ENUM('g', 'kg', 'ml', 'l', 'kos', 'žlica', 'čajna žlička', 'skodelica') NOT NULL,
-    TK_Recepti INT NOT NULL,
+    TK_Recepti INT,
     CONSTRAINT FK_Recepti_Sestavine FOREIGN KEY (TK_Recepti)
         REFERENCES Recepti(idRecepti) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Nacrt_obrokov (
-    idNacrt_obrokov INT AUTO_INCREMENT PRIMARY KEY,
-    datum DATE DEFAULT (CURRENT_DATE + INTERVAL 1 DAY)
-);
+
+
 
 CREATE TABLE Recepti_Nacrt_obrokov (
     idRecepti_Nacrt_obrokov INT AUTO_INCREMENT PRIMARY KEY,
@@ -478,6 +493,10 @@ CREATE TABLE Recepti_Nacrt_obrokov (
         REFERENCES Nacrt_obrokov(idNacrt_obrokov) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT UNIQUE (TK_Nacrt_obrokov, meal_type)
 );
+
+SET FOREIGN_KEY_CHECKS=1;
+
+
 
 ```
 ### Povezava Spring Boot z MySQL
