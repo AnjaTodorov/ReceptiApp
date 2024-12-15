@@ -108,6 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         Prikaži potrebne sestavine
                         <img src="sliki/grocery-cart.png" alt="" style="width: 30px; height: 30px; vertical-align: middle;"/>
                     </button>
+                       <button class="calculate-nutrition-btn" data-id="${plan.idNacrtObrokov}">
+                        Izračunaj hranilne vrednosti
+                        <img src="sliki/7757741.png" alt="" style="width: 30px; height: 30px; vertical-align: middle;"/>
+                    </button>
                 `;
                     mealPlansContainer.appendChild(card);
                     mealPlansContainer.addEventListener('click', async (event) => {
@@ -136,23 +140,79 @@ document.addEventListener('DOMContentLoaded', () => {
             mealPlansContainer.innerHTML = '<p>Error loading meal plans.</p>';
         }
     };
+
     const fetchIngredients = async (mealPlanId) => {
         try {
-           
+            // Fetch ingredients from the meal plan
             const response = await fetch(`http://localhost:8080/meal-plans/meal-plan/${mealPlanId}/ingredients`);
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch ingredients: ${response.status} - ${errorText}`);
-            }
-    
+            if (!response.ok) throw new Error('Failed to fetch ingredients');
             const data = await response.json();
-            return data;
+    
+            const ingredients = data.ingredients;
+            const recipeIds = data.recipeIds || [];
+    
+            // Log the fetched ingredients and recipeIds
+            console.log('Fetched ingredients:', ingredients);
+            console.log('Fetched recipeIds:', recipeIds);
+    
+            // Fetch all recipes
+            const recipesResponse = await fetch('http://localhost:8080/recepti'); // Adjust URL to fetch recipes
+            if (!recipesResponse.ok) throw new Error('Failed to fetch recipes');
+            const recipes = await recipesResponse.json();
+    
+            // Log the fetched recipes
+            console.log('Fetched recipes:', recipes);
+    
+            // Loop through recipe IDs and match them with the recipes in the meal plan
+            const matchedRecipes = recipeIds.map(recipeId => {
+                const recipe = recipes.find(r => r.idRecepti === recipeId);
+                if (!recipe) {
+                    console.warn(`Recipe not found for recipeId: ${recipeId}`);
+                    return null;
+                }
+                return recipe;
+            }).filter(recipe => recipe !== null); // Filter out null values
+    
+            // Log matched recipes
+            console.log('Matched recipes:', matchedRecipes);
+    
+            // Now iterate over ingredients and match them to recipes
+            const adjustedIngredients = ingredients.map(ingredient => {
+                const recipe = matchedRecipes.find(r => r.naziv.trim().toLowerCase() === ingredient.name.trim().toLowerCase());
+    
+                if (!recipe) {
+                    console.warn(`Recipe not found for ingredient: ${ingredient.name}`);
+                    return ingredient; // Return the ingredient as is if no matching recipe is found
+                }
+    
+                // Get the number of portions for the recipe (default to 1 if undefined)
+                const numberOfPortions = recipe.osebe || 1;
+    
+                // Adjust the ingredient quantity by dividing it by the number of portions
+                const adjustedQuantity = ingredient.quantity / numberOfPortions;
+    
+                return {
+                    name: ingredient.name,
+                    quantity: adjustedQuantity,
+                    unit: ingredient.unit
+                };
+            });
+    
+            // Log the adjusted ingredients
+            console.log('Adjusted ingredients:', adjustedIngredients);
+    
+            return adjustedIngredients;
+    
         } catch (error) {
-            console.error('Error in fetchIngredients:', error);
+            console.error('Error fetching ingredients:', error);
             throw error;
         }
     };
+    
+    
+    
+    
+    
     
     const showPopup = (ingredients) => {
         const existingPopup = document.querySelector('.popup');
@@ -160,9 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.removeChild(existingPopup);
         }
     
+        // Format the ingredients by creating a list of strings like 'name - quantity unit'
         const formattedIngredients = ingredients
-            .flatMap(ingredient => ingredient.split(',')) 
-            .map(item => item.trim()) 
+            .map(item => {
+                // Ensure quantity is defined before calling toFixed
+                const quantity = item.quantity !== undefined && item.quantity !== null ? item.quantity.toFixed(2) : 'N/A'; 
+                return `${item.name} - ${quantity} ${item.unit}`;
+            })
             .filter(item => item !== ""); 
     
         const overlay = document.createElement('div');
@@ -190,17 +254,21 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     
+    
+    
+    
 
     // Helper function to get recipe details (name, image, and ingredients) based on meal type
     const getRecipeDetails = async (plan, mealType) => {
         const recipe = plan.recipes.find(r => r.mealType === mealType);
         if (recipe) {
+            const numberOfPortions = recipe.portions; // Number of portions for the specific recipe
             const recipeDetails = await loadRecipeDetails(recipe.idRecepti);
-            return recipeDetails ? `${renderRecipeDetails(recipeDetails)}` : 'Recipe details not available';
+            return recipeDetails ? `${renderRecipeDetails(recipeDetails, numberOfPortions)}` : 'Recipe details not available';
         }
         return 'No recipe available';
     };
-
+    
     // Function to load recipe details by ID (fetches photo and ingredients)
     const loadRecipeDetails = async (recipeId) => {
         try {
@@ -287,4 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Error creating meal plan. Please try again later.');
         }
     });
+
+
+
+
 });

@@ -986,7 +986,7 @@ button:hover {
   margin-bottom: 40px;
 }
 
-.show-ingredients-btn {
+.show-ingredients-btn, .calculate-nutrition-btn {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -1141,3 +1141,4 @@ button:hover {
 button {
   margin-top: 10px;
 }
+

@@ -1,10 +1,7 @@
 package com.RIS.Mojirecepti.controller;
 
 import com.RIS.Mojirecepti.dto.MealPlanExistenceResponse;
-import com.RIS.Mojirecepti.entity.MealType;
-import com.RIS.Mojirecepti.entity.NacrtObrokov;
-import com.RIS.Mojirecepti.entity.Recepti;
-import com.RIS.Mojirecepti.entity.ReceptiNacrtObrokov;
+import com.RIS.Mojirecepti.entity.*;
 import com.RIS.Mojirecepti.dto.MealPlanRequest;
 import com.RIS.Mojirecepti.repository.NacrtObrokovRepository;
 import com.RIS.Mojirecepti.repository.ReceptiNacrtObrokovRepository;
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.RIS.Mojirecepti.dto.MealPlanResponse;
+import com.RIS.Mojirecepti.repository.SestavineRepository;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -35,6 +33,8 @@ public class ReceptiNacrtObrokovController {
 
     @Autowired
     private ReceptiRepository receptiRepository;
+    @Autowired
+    private SestavineRepository SestavineRepository;
 
     @GetMapping
     public List<MealPlanResponse> getAllMealPlans() {
@@ -111,15 +111,38 @@ public class ReceptiNacrtObrokovController {
 
         return ResponseEntity.ok(response);  // Return the response as JSON
     }
-/*
     @GetMapping("/meal-plan/{id}/ingredients")
-    public List<String> getIngredientsByMealPlan(@PathVariable("id") int nacrtObrokovId) {
-        List<ReceptiNacrtObrokov> receptiNacrtObrokovList = receptiNacrtObrokovRepository.findByNacrtObrokovId(nacrtObrokovId);
+    public ResponseEntity<Map<String, Object>> getMealPlanIngredients(@PathVariable("id") Long mealPlanId) {
+        // Fetch the meal plan by its ID
+        NacrtObrokov mealPlan = nacrtObrokovRepository.findById(mealPlanId).orElse(null);
 
-        return receptiNacrtObrokovList.stream()
-                .map(receptiNacrtObrokov -> receptiNacrtObrokov.getRecepti().getSestavine())
+        if (mealPlan == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Meal plan not found"));
+        }
+
+        // Fetch all recipes linked to the meal plan
+        List<ReceptiNacrtObrokov> recipesForMealPlan = receptiNacrtObrokovRepository.findByNacrtObrokov(mealPlan);
+
+        // Collect all ingredients from the recipes
+        List<Sestavine> allIngredients = recipesForMealPlan.stream()
+                .flatMap(recipeLink -> SestavineRepository.findByRecepti(recipeLink.getRecepti()).stream())  // Fetch ingredients for each recipe
+                .distinct()  // Avoid duplicates
                 .collect(Collectors.toList());
-    }*/
+
+        // Prepare a response with the ingredients
+        Map<String, Object> response = Map.of(
+                "mealPlanId", mealPlanId,
+                "ingredients", allIngredients.stream()
+                        .map(ingredient -> Map.of(
+                                "name", ingredient.getNaziv(),
+                                "quantity", ingredient.getKolicina(),
+                                "unit", ingredient.getEnota().toString()
+                        ))
+                        .collect(Collectors.toList())
+        );
+
+        return ResponseEntity.ok(response);
+    }
 
 }
 
