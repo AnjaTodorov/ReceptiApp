@@ -355,8 +355,99 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Error creating meal plan. Please try again later.');
         }
     });
+ // Add event listener for the calculate nutrition button
+mealPlansContainer.addEventListener('click', async (event) => {
+    const button = event.target.closest('.calculate-nutrition-btn');
+    if (button) {
+        const mealPlanId = button.getAttribute('data-id');
 
+        try {
+            // Fetch nutritional data for the meal plan
+            const nutritionalData = await fetchNutritionalData(mealPlanId);
 
+            // Show the modal with nutritional comparison
+            showNutritionModal(nutritionalData);
+        } catch (error) {
+            console.error('Error fetching nutritional data:', error);
+            alert('Could not fetch nutritional data. Please try again.');
+        }
+    }
+});
 
+// Fetch nutritional data for a meal plan
+const fetchNutritionalData = async (mealPlanId) => {
+    const response = await fetch(`http://localhost:8080/meal-plans/${mealPlanId}/nutritional-values`);
+    if (!response.ok) throw new Error('Failed to fetch nutritional data');
+    return await response.json(); // Example format: { "Energy": 2207, "Carbs": 102, "Protein": 78, "Sugar": 118 }
+};
 
+// Show the modal for nutritional comparison
+const showNutritionModal = (nutritionData) => {
+    // Recommended values per day (example values, can be adjusted as needed)
+    const recommendedValues = {
+        Energy: 8700, // in kilojoules
+        Protein: 50,  // in grams
+        Fat: 70,      // in grams
+        SaturatedFattyAcids: 24, // in grams
+        Carbs: 310, // in grams
+        Sugar: 90,   // in grams
+        Sodium: 2.3,  // in grams
+        DietaryFibre: 30 // in grams
+    };
+
+    // Filter the nutrients available in the response
+    const availableNutrients = Object.keys(nutritionData).filter(key => nutritionData[key] !== undefined);
+
+    // Create the comparison table for available nutrients
+    const comparison = availableNutrients.map((key) => {
+        const userValue = nutritionData[key] || 0;  // Default to 0 if nutrient is not provided
+        const recommendedValue = recommendedValues[key] || 'N/A'; // Handle case where recommended value is not available
+        const status = recommendedValue !== 'N/A' && userValue >= recommendedValue
+            ? '✅ Meets recommendation'
+            : '⚠️ Below recommendation';
+        return `
+            <tr>
+                <td>${key}</td>
+                <td>${userValue}</td>
+                <td>${recommendedValue}</td>
+                <td>${status}</td>
+            </tr>
+        `;
+    }).join('');
+
+    // Create the modal HTML
+    const modalHtml = `
+        <div class="popup-overlay"></div>
+        <div class="popup">
+            <div class="popup-content">
+                <h3>Nutrition Comparison</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nutrient</th>
+                            <th>Your Intake</th>
+                            <th>Recommended</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${comparison}
+                    </tbody>
+                </table>
+                <button class="close-popup-btn">Close</button>
+            </div>
+        </div>
+    `;
+
+    // Append the modal to the body
+    const overlay = document.createElement('div');
+    overlay.innerHTML = modalHtml;
+    document.body.appendChild(overlay);
+
+    // Add event listener to close the modal
+    const closeButton = overlay.querySelector('.close-popup-btn');
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+};
 });

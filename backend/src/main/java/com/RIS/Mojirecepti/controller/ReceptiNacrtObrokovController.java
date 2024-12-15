@@ -3,17 +3,15 @@ package com.RIS.Mojirecepti.controller;
 import com.RIS.Mojirecepti.dto.MealPlanExistenceResponse;
 import com.RIS.Mojirecepti.entity.*;
 import com.RIS.Mojirecepti.dto.MealPlanRequest;
-import com.RIS.Mojirecepti.repository.NacrtObrokovRepository;
-import com.RIS.Mojirecepti.repository.ReceptiNacrtObrokovRepository;
-import com.RIS.Mojirecepti.repository.ReceptiRepository;
+import com.RIS.Mojirecepti.repository.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.RIS.Mojirecepti.dto.MealPlanResponse;
-import com.RIS.Mojirecepti.repository.SestavineRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +33,9 @@ public class ReceptiNacrtObrokovController {
     private ReceptiRepository receptiRepository;
     @Autowired
     private SestavineRepository SestavineRepository;
+
+    @Autowired
+    private HranilneVrednostiRepository hranilneVrednostiRepository;
 
     @GetMapping
     public List<MealPlanResponse> getAllMealPlans() {
@@ -143,7 +144,38 @@ public class ReceptiNacrtObrokovController {
 
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/{id}/nutritional-values")
+    public ResponseEntity<Map<String, BigDecimal>> getMealPlanNutritionalValues(@PathVariable("id") Long mealPlanId) {
+        // Fetch the meal plan
+        NacrtObrokov mealPlan = nacrtObrokovRepository.findById(mealPlanId).orElse(null);
 
+        if (mealPlan == null) {
+            // Return error if meal plan not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", BigDecimal.ZERO));  // Or another appropriate default value
+        }
+
+        // Fetch recipes linked to this meal plan
+        List<ReceptiNacrtObrokov> recipesForMealPlan = receptiNacrtObrokovRepository.findByNacrtObrokov(mealPlan);
+
+        // Collect all nutritional values from the recipes
+        List<HranilneVrednosti> allNutritionalValues = recipesForMealPlan.stream()
+                .flatMap(recipeLink -> hranilneVrednostiRepository.findByRecepti_IdRecepti(recipeLink.getRecepti().getIdRecepti()).stream())
+                .collect(Collectors.toList());
+
+        // Aggregate nutritional values by nutrient name (BigDecimal values)
+        Map<String, BigDecimal> nutritionalAggregates = new HashMap<>();
+
+        for (HranilneVrednosti hranilna : allNutritionalValues) {
+            String nutrientName = hranilna.getNaziv();  // Nutrient name
+            BigDecimal quantity = hranilna.getKolicina();  // Nutrient quantity
+
+            // Aggregate the nutritional value for this nutrient
+            nutritionalAggregates.put(nutrientName, nutritionalAggregates.getOrDefault(nutrientName, BigDecimal.ZERO).add(quantity));
+        }
+
+        // Return the nutritional aggregates (BigDecimal values)
+        return ResponseEntity.ok(nutritionalAggregates);
+    }
 }
 
 
