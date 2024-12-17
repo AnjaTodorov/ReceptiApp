@@ -381,52 +381,75 @@ const fetchNutritionalData = async (mealPlanId) => {
     return await response.json(); // Example format: { "Energy": 2207, "Carbs": 102, "Protein": 78, "Sugar": 118 }
 };
 
-// Show the modal for nutritional comparison
 const showNutritionModal = (nutritionData) => {
-    // Recommended values per day (example values, can be adjusted as needed)
+    // Priporočene vrednosti na dan (primer, prilagodite po potrebi)
     const recommendedValues = {
-        Energy: 8700, // in kilojoules
-        Protein: 50,  // in grams
-        Fat: 70,      // in grams
-        SaturatedFattyAcids: 24, // in grams
-        Carbs: 310, // in grams
-        Sugar: 90,   // in grams
-        Sodium: 2.3,  // in grams
-        DietaryFibre: 30 // in grams
+        Energija: 8700, // v kilodžulih
+        Beljakovine: 50,  // v gramih
+        Maščobe: 70,      // v gramih
+        NasičeneMaščobe: 24, // v gramih
+        OgljikoviHidrati: 310, // v gramih
+        Sladkor: 90,   // v gramih
+        Natrij: 2.3,  // v gramih
+        PrehranskaVlaknina: 30 // v gramih
     };
 
-    // Filter the nutrients available in the response
+    // Prag za označevanje "preseženih" vrednosti
+    const exceedThresholds = {
+        Energija: 200, // kJ za Energijo
+        Beljakovine: 20, // g za Beljakovine
+        Maščobe: 20,     // g za Maščobe
+        NasičeneMaščobe: 20, // g za Nasičene Maščobe
+        OgljikoviHidrati: 20,   // g za Ogljikove hidrate
+        Sladkor: 20,   // g za Sladkor
+        Natrij: 0.5, // g za Natrij
+        PrehranskaVlaknina: 5 // g za Prehranska vlaknina
+    };
+
+    // Filtriraj razpoložljive hranilne snovi v odgovoru
     const availableNutrients = Object.keys(nutritionData).filter(key => nutritionData[key] !== undefined);
 
-    // Create the comparison table for available nutrients
+    // Ustvari primerjalno tabelo za razpoložljive hranilne snovi
     const comparison = availableNutrients.map((key) => {
-        const userValue = nutritionData[key] || 0;  // Default to 0 if nutrient is not provided
-        const recommendedValue = recommendedValues[key] || 'N/A'; // Handle case where recommended value is not available
-        const status = recommendedValue !== 'N/A' && userValue >= recommendedValue
-            ? '✅ Meets recommendation'
-            : '⚠️ Below recommendation';
+        const userValue = nutritionData[key] || 0;  // Privzeto 0, če hranilna snov ni na voljo
+        const recommendedValue = recommendedValues[key] || 'N/A'; // Obravnava primer, ko priporočena vrednost ni na voljo
+
+        let status = '⚠️ Pod priporočenim';
+        let emoji = '';
+        
+        if (recommendedValue !== 'N/A') {
+            if (userValue >= recommendedValue) {
+                status = '✅ Zadostuje priporočilu';
+            }
+            // Preveri, če vrednost presega priporočeno
+            if (userValue >= recommendedValue + exceedThresholds[key]) {
+                status = '❗ Presega priporočilo';
+                emoji = '';
+            }
+        }
+
         return `
             <tr>
                 <td>${key}</td>
                 <td>${userValue}</td>
                 <td>${recommendedValue}</td>
-                <td>${status}</td>
+                <td>${emoji} ${status}</td>
             </tr>
         `;
     }).join('');
 
-    // Create the modal HTML
+    // Ustvari HTML za modalno okno
     const modalHtml = `
         <div class="popup-overlay"></div>
         <div class="popup">
             <div class="popup-content">
-                <h3>Nutrition Comparison</h3>
+                <h3>Primerjava hranil</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Nutrient</th>
-                            <th>Your Intake</th>
-                            <th>Recommended</th>
+                            <th>Hranilna snov</th>
+                            <th>Vaš vnos</th>
+                            <th>Priporočeno</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -434,11 +457,10 @@ const showNutritionModal = (nutritionData) => {
                         ${comparison}
                     </tbody>
                 </table>
-                <button class="close-popup-btn">Close</button>
+                <button class="close-popup-btn">Zapri</button>
             </div>
         </div>
     `;
-
     // Append the modal to the body
     const overlay = document.createElement('div');
     overlay.innerHTML = modalHtml;

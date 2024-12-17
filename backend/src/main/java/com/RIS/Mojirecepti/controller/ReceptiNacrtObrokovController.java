@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.RIS.Mojirecepti.dto.MealPlanResponse;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -165,17 +166,35 @@ public class ReceptiNacrtObrokovController {
         // Aggregate nutritional values by nutrient name (BigDecimal values)
         Map<String, BigDecimal> nutritionalAggregates = new HashMap<>();
 
-        for (HranilneVrednosti hranilna : allNutritionalValues) {
-            String nutrientName = hranilna.getNaziv();  // Nutrient name
-            BigDecimal quantity = hranilna.getKolicina();  // Nutrient quantity
+        for (ReceptiNacrtObrokov recipeLink : recipesForMealPlan) {
+            // Get the number of servings (osebe) for the recipe
+            int numberOfPeople = recipeLink.getRecepti().getOsebe();
 
-            // Aggregate the nutritional value for this nutrient
-            nutritionalAggregates.put(nutrientName, nutritionalAggregates.getOrDefault(nutrientName, BigDecimal.ZERO).add(quantity));
+            // If the number of people is zero (prevent division by zero), set it to 1
+            if (numberOfPeople == 0) {
+                numberOfPeople = 1;
+            }
+
+            // Get the nutritional values for this specific recipe
+            List<HranilneVrednosti> recipeNutritionalValues = hranilneVrednostiRepository.findByRecepti_IdRecepti(recipeLink.getRecepti().getIdRecepti());
+
+            // Adjust the nutritional values per person (osebe)
+            for (HranilneVrednosti hranilna : recipeNutritionalValues) {
+                String nutrientName = hranilna.getNaziv();  // Nutrient name
+                BigDecimal quantity = hranilna.getKolicina();  // Nutrient quantity
+
+                // Divide by the number of servings to get per-person values
+                BigDecimal perPersonQuantity = quantity.divide(BigDecimal.valueOf(numberOfPeople), RoundingMode.HALF_UP);
+
+                // Aggregate the nutritional value for this nutrient
+                nutritionalAggregates.put(nutrientName, nutritionalAggregates.getOrDefault(nutrientName, BigDecimal.ZERO).add(perPersonQuantity));
+            }
         }
 
         // Return the nutritional aggregates (BigDecimal values)
         return ResponseEntity.ok(nutritionalAggregates);
     }
+
 }
 
 
