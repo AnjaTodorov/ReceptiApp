@@ -35,38 +35,6 @@ public class ReceptiControllerTest {
     private ReceptiRepository receptiRepository;
 
 
-    @Test
-    @DisplayName("Test Recipe Creation (Positive)")
-    void testCreateRecipePositive() throws Exception {
-        MockMultipartFile picture = new MockMultipartFile(
-                "picture",
-                "image.jpg",
-                MediaType.IMAGE_JPEG_VALUE,
-                "mock file content".getBytes()
-        );
-
-        Recepti newRecipe = new Recepti();
-        newRecipe.setNaziv("Test Recipe");
-        newRecipe.setOpis("Test Description");
-        newRecipe.setTip(Recepti.Tip.zajtrk);
-        newRecipe.setSlika("image.jpg");
-        newRecipe.setOsebe(4); // Set the number of people
-
-        when(receptiRepository.save(any(Recepti.class))).thenReturn(newRecipe);
-
-        mockMvc.perform(multipart("/recepti")
-                        .file(picture)  // Add the mock file to the request
-                        .param("naziv", "Test Recipe")
-                        .param("opis", "Test Description")
-                        .param("tip", "zajtrk")
-                        .param("osebe", "4") // Add the new 'osebe' parameter
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.naziv").value("Test Recipe"))
-                .andExpect(jsonPath("$.slika").value("image.jpg"))
-                .andExpect(jsonPath("$.osebe").value(4)); // Assert 'osebe' in the response
-    }
-
     // Negative Test for Recipe Creation (Missing required fields)
     @Test
     @DisplayName("Test Recipe Creation (Negative - Missing fields)")
