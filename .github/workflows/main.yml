@@ -83,8 +83,11 @@ jobs:
         working-directory: .
   
       - name: Start Frontend Server
-        run: node server.js
+        run: nohup node server.js &
         working-directory: .
+
+      - name: Wait for Server to Start
+        run: sleep 30 
 
   test-backend:
     runs-on: ubuntu-latest
