@@ -50,19 +50,21 @@ public class ReceptiControllerTest {
         newRecipe.setOpis("Test Description");
         newRecipe.setTip(Recepti.Tip.zajtrk);
         newRecipe.setSlika("image.jpg");
+        newRecipe.setOsebe(4); // Set the number of people
 
         when(receptiRepository.save(any(Recepti.class))).thenReturn(newRecipe);
 
         mockMvc.perform(multipart("/recepti")
                         .file(picture)  // Add the mock file to the request
                         .param("naziv", "Test Recipe")
-                        .param("sestavine", "Ingredient 1, Ingredient 2")
                         .param("opis", "Test Description")
                         .param("tip", "zajtrk")
+                        .param("osebe", "4") // Add the new 'osebe' parameter
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.naziv").value("Test Recipe"))
-                .andExpect(jsonPath("$.slika").value("image.jpg"));
+                .andExpect(jsonPath("$.slika").value("image.jpg"))
+                .andExpect(jsonPath("$.osebe").value(4)); // Assert 'osebe' in the response
     }
 
     // Negative Test for Recipe Creation (Missing required fields)
@@ -124,35 +126,40 @@ public class ReceptiControllerTest {
     void testUpdateRecipe() throws Exception {
         Long recipeId = 1L;
 
+        // Existing recipe mock
         Recepti existingRecipe = new Recepti();
         existingRecipe.setNaziv("Old Recipe");
         existingRecipe.setOpis("Old Description");
         existingRecipe.setTip(Recepti.Tip.zajtrk);
+        existingRecipe.setOsebe(2); // Existing number of people
 
         when(receptiRepository.findById(recipeId)).thenReturn(Optional.of(existingRecipe));
 
+        // Updated recipe mock
         Recepti updatedRecipe = new Recepti();
         updatedRecipe.setNaziv("Updated Recipe");
         updatedRecipe.setOpis("Updated Description");
         updatedRecipe.setTip(Recepti.Tip.zajtrk);
+        updatedRecipe.setOsebe(4); // Updated number of people
 
         when(receptiRepository.save(any(Recepti.class))).thenReturn(updatedRecipe);
 
+        // Updated recipe JSON
         String updatedRecipeJson = "{"
                 + "\"naziv\": \"Updated Recipe\","
-                + "\"sestavine\": \"Updated Ingredient 1, Ingredient 2\","
                 + "\"opis\": \"Updated Description\","
-                + "\"tip\": \"zajtrk\""
+                + "\"tip\": \"zajtrk\","
+                + "\"osebe\": 4"
                 + "}";
 
         mockMvc.perform(put("/recepti/{id}", recipeId)
-                        .contentType(MediaType.APPLICATION_JSON)  // Set content type to JSON
-                        .content(updatedRecipeJson))  // Set the body content as JSON
-                .andExpect(status().isOk())  // Should return 200 OK
+                        .contentType(MediaType.APPLICATION_JSON) // Set content type to JSON
+                        .content(updatedRecipeJson)) // Set the body content as JSON
+                .andExpect(status().isOk()) // Should return 200 OK
                 .andExpect(jsonPath("$.naziv").value("Updated Recipe"))
-                .andExpect(jsonPath("$.sestavine").value("Updated Ingredient 1, Ingredient 2"))
                 .andExpect(jsonPath("$.opis").value("Updated Description"))
-                .andExpect(jsonPath("$.tip").value("zajtrk"));
+                .andExpect(jsonPath("$.tip").value("zajtrk"))
+                .andExpect(jsonPath("$.osebe").value(4)); // Assert 'osebe' field
     }
 
     // Test for Fetching Recipe by ID
