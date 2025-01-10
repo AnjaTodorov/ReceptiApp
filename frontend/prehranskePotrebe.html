@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Prehranskih Potreb</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+  
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Set body content in a column */
+    justify-content: flex-start; /* Align content at the top */
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items at the start vertically */
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 20px; 
+    margin-left: 400px;
+}
+
+        .input-section, .output-section {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+        .health-level {
+            margin-top: 15px;
+        }
+        .health-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+            background: linear-gradient(to right, #ff4d4d, #ffd700, #4caf50, #ffd700, #ff4d4d);
+            border-radius: 5px;
+        }
+        .health-indicator {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: black;
+        }
+        .health-label {
+            position: absolute;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .health-label.low {
+            left: 0;
+            transform: translateX(-50%);
+        }
+        .health-label.medium {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .health-label.high {
+            right: 0;
+            transform: translateX(50%);
+        }
+        .navbar{
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+nav{
+  flex: 1;
+  text-align: center;
+  font-size: 19px;
+  font-weight: bolder;
+}
+nav ul{
+  display: inline-block;
+  list-style-type: none;
+}
+nav ul li{
+  display: inline-block;
+  margin-right: 22px;
+}
+
+nav ul#MenuItems li {
+  list-style: none; /* Remove bullet points */
+  display: inline-block; /* Align list items horizontally */
+  margin-right: 20px; /* Add some spacing between items */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+nav ul#MenuItems li a {
+  text-decoration: none; /* Remove underline from links */
+  color: #908a8a; /* Set the initial color */
+  font-size: 19px; /* Font size for the links */
+}
+
+/* Hover effect */
+nav ul#MenuItems li:hover {
+  transform: scale(1.1); /* Slightly enlarge the list item */
+}
+
+nav ul#MenuItems li a:hover {
+  color: #0ca320; /* Change text color on hover */
+}
+a{
+  text-decoration: none;
+  color: gray;
+}
+p{
+  color: gray;
+}
+    </style>
+
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <img src="sliki/slika36.png" width="150px">
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li><a href="index.html">Domov</a></li>
+                        <li><a href="recepti.html">Recepti</a></li>
+                        <li><a href="nacrtobrokov.html">Načrt obrokov</a></li>
+                        <li><a href="prehranskePotrebe.html">Moje prehranske potrebe</a></li>
+                       
+                    </ul>
+                </nav>
+    
+            </div>
+           
+        </div>
+    </div>
+    <div class="main-container">
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2>Izračunaj Prehranske Potrebe</h2>
+            <form id="nutrition-form">
+                <div class="form-group">
+                    <label for="height">Višina:</label>
+                    <input type="number" id="height" name="height" placeholder="Vnesite višino v cm" required>
+                    <small><a href="#" onclick="toggleUnits('height')">Preklopi na inče</a></small>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Teža:</label>
+                    <input type="number" id="weight" name="weight" placeholder="Vnesite težo v kg" required>
+                    <small><a href="#" onclick="toggleUnits('weight')">Preklopi na funte</a></small>
+                </div>
+                <div class="form-group">
+                    <label for="age">Starost (leta):</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Spol:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Izberite...</option>
+                        <option value="male">Moški</option>
+                        <option value="female">Ženska</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activity-level">Stopnja aktivnosti:</label>
+                    <select id="activity-level" name="activity-level" required>
+                        <option value="">Izberite...</option>
+                        <option value="sedentary">Sedeč način življenja</option>
+                        <option value="light">Rahlo aktivni</option>
+                        <option value="moderate">Zmerno aktivni</option>
+                        <option value="active">Zelo aktivni</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goal">Cilj:</label>
+                    <select id="goal" name="goal" required>
+                        <option value="">Izberite...</option>
+                        <option value="maintain">Ohraniti težo</option>
+                        <option value="gain">Pridobiti težo</option>
+                        <option value="lose">Izgubiti težo</option>
+                    </select>
+                </div>
+                <button type="button" onclick="calculateNutrition()">Izračunaj</button>
+            </form>
+            <div class="health-level">
+                <h3>Raven Zdravja</h3>
+                <div class="health-scale" id="health-scale">
+                    <div class="health-label low"></div>
+                    <div class="health-label medium"></div>
+                    <div class="health-label high"></div>
+                    <div id="health-indicator" class="health-indicator"></div>
+                </div>
+                <p id="health-status" class="health-status">Vaša raven zdravja bo prikazana tukaj.</p>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <h2>Analiza:</h2>
+
+            <div id="results" class="results">
+                <h3>Prehranske Potrebe</h3>
+                <div id="energy">Energija: </div>
+                <div id="protein">Beljakovine: </div>
+                <div id="fat">Maščobe: </div>
+                <div id="saturated-fat">Nasičene Maščobe: </div>
+                <div id="carbs">Ogljikovi Hidrati: </div>
+                <div id="sugar">Sladkor: </div>
+                <div id="sodium">Natrij: </div>
+                <div id="fiber">Prehranska Vlaknina: </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="nutritionChart" width="400" height="200"></canvas>
+            </div>
+
+    <script>
+
+
+
+
+       
+        let isMetric = true;
+    
+        function toggleUnits(field) {
+            const input = document.getElementById(field);
+            const value = parseFloat(input.value);
+            if (field === 'height') {
+                if (isMetric) {
+                    input.value = (value / 2.54).toFixed(2);
+                    input.placeholder = "Enter height in inches";
+                } else {
+                    input.value = (value * 2.54).toFixed(2);
+                    input.placeholder = "Enter height in cm";
+                }
+            } else if (field === 'weight') {
+                if (isMetric) {
+                    input.value = (value * 2.20462).toFixed(2);
+                    input.placeholder = "Enter weight in pounds";
+                } else {
+                    input.value = (value / 2.20462).toFixed(2);
+                    input.placeholder = "Enter weight in kg";
+                }
+            }
+            isMetric = !isMetric;
+        }
+    
+        function calculateNutrition() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activityLevel = document.getElementById('activity-level').value;
+            const goal = document.getElementById('goal').value;
+    
+            if (!height || !weight || !age || !gender || !activityLevel || !goal) {
+                alert('Please fill out all fields.');
+                return;
+            }
+    
+            // Calculate BMR (Basal Metabolic Rate)
+            const baseEnergy = gender === 'male'
+                ? 10 * weight + 6.25 * height - 5 * age + 5
+                : 10 * weight + 6.25 * height - 5 * age - 161;
+    
+            const activityMultiplier =
+                activityLevel === 'sedentary' ? 1.2 :
+                activityLevel === 'light' ? 1.375 :
+                activityLevel === 'moderate' ? 1.55 : 1.725;
+    
+            const goalAdjustment = goal === 'gain' ? 500 : goal === 'lose' ? -500 : 0;
+    
+            // Total energy requirement
+            const totalEnergy = (baseEnergy * activityMultiplier) + goalAdjustment;
+    
+            // Calculate nutrition values
+            const protein = weight * 0.8;
+            const fat = totalEnergy * 0.25 / 37;
+            const saturatedFat = fat * 0.1;
+            const carbs = totalEnergy * 0.55 / 17;
+            const sugar = carbs * 0.1;
+            const sodium = 2.3;
+            const fiber = weight * 0.14;
+    
+            // Display nutrition values
+            document.getElementById('energy').textContent = `Energy: ${totalEnergy.toFixed(2)} kJ`;
+            document.getElementById('protein').textContent = `Protein: ${protein.toFixed(2)} g`;
+            document.getElementById('fat').textContent = `Fat: ${fat.toFixed(2)} g`;
+            document.getElementById('saturated-fat').textContent = `Saturated Fat: ${saturatedFat.toFixed(2)} g`;
+            document.getElementById('carbs').textContent = `Carbs: ${carbs.toFixed(2)} g`;
+            document.getElementById('sugar').textContent = `Sugar: ${sugar.toFixed(2)} g`;
+            document.getElementById('sodium').textContent = `Sodium: ${sodium.toFixed(2)} g`;
+            document.getElementById('fiber').textContent = `Fiber: ${fiber.toFixed(2)} g`;
+    
+            document.getElementById('results').style.display = 'block';
+    
+            // Update chart with nutrition values
+            const ctx = document.getElementById('nutritionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Protein', 'Fat', 'Carbs', 'Sugar', 'Fiber'],
+                    datasets: [{
+                        data: [protein, fat, carbs, sugar, fiber],
+                        backgroundColor: ['#4caf50', '#ff5722', '#2196f3', '#ffc107', '#9c27b0']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+    
+            // Calculate BMI and health level
+            const bmi = weight / ((height / 100) ** 2);
+            const healthLevel = bmi;
+    
+            const indicator = document.getElementById('health-indicator');
+            const healthScaleWidth = document.getElementById('health-scale').offsetWidth;
+    
+            // Adjust the position of the health indicator based on BMI, including very low and very high BMI
+            const position = Math.min(Math.max((healthLevel - 10) * (healthScaleWidth / 20), 0), healthScaleWidth - 5);
+            indicator.style.left = `${position}px`;
+    
+            const healthStatus = document.getElementById('health-status');
+            // Updated health level categorization with clear low and high BMI ranges
+            if (bmi < 18.5) {
+                healthStatus.textContent = 'Low health level (Underweight)';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                healthStatus.textContent = 'High health level (Normal weight)';
+            } else if (bmi >= 25 && bmi < 30) {
+                healthStatus.textContent = 'Medium health level (Overweight)';
+            } else {
+                healthStatus.textContent = 'Low health level (Obese)';
+            }
+        }
+    </script>
+    
+    
