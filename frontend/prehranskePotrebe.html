@@ -34,6 +34,7 @@
     width: 100%;
     margin-top: 20px; 
     margin-left: 400px;
+    margin-right: 400px;
 }
 
         .input-section, .output-section {
@@ -56,14 +57,14 @@
         button {
             width: 100%;
             padding: 10px;
-            background-color: #007BFF;
+            background-color: #41b816;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #3a9e15;;
         }
         .results {
             margin-top: 20px;
@@ -240,7 +241,9 @@ p{
                     <div class="health-label high"></div>
                     <div id="health-indicator" class="health-indicator"></div>
                 </div>
-                <p id="health-status" class="health-status">Vaša raven zdravja bo prikazana tukaj.</p>
+                <p id="health-status" class="health-status" style="justify-content: center; align-items: center; text-align: center; margin-top: 8px;">
+                    Vaša raven zdravja bo prikazana tukaj.
+                </p>
             </div>
         </div>
 
@@ -278,18 +281,18 @@ p{
             if (field === 'height') {
                 if (isMetric) {
                     input.value = (value / 2.54).toFixed(2);
-                    input.placeholder = "Enter height in inches";
+                    input.placeholder = "Vnesite višino v palcih";
                 } else {
                     input.value = (value * 2.54).toFixed(2);
-                    input.placeholder = "Enter height in cm";
+                    input.placeholder = "Vnesite višino v cm";
                 }
             } else if (field === 'weight') {
                 if (isMetric) {
                     input.value = (value * 2.20462).toFixed(2);
-                    input.placeholder = "Enter weight in pounds";
+                    input.placeholder = "Vnesite težo v funtih";
                 } else {
                     input.value = (value / 2.20462).toFixed(2);
-                    input.placeholder = "Enter weight in kg";
+                    input.placeholder = "Vnesite težo v kg";
                 }
             }
             isMetric = !isMetric;
@@ -333,14 +336,14 @@ p{
             const fiber = weight * 0.14;
     
             // Display nutrition values
-            document.getElementById('energy').textContent = `Energy: ${totalEnergy.toFixed(2)} kJ`;
-            document.getElementById('protein').textContent = `Protein: ${protein.toFixed(2)} g`;
-            document.getElementById('fat').textContent = `Fat: ${fat.toFixed(2)} g`;
-            document.getElementById('saturated-fat').textContent = `Saturated Fat: ${saturatedFat.toFixed(2)} g`;
-            document.getElementById('carbs').textContent = `Carbs: ${carbs.toFixed(2)} g`;
-            document.getElementById('sugar').textContent = `Sugar: ${sugar.toFixed(2)} g`;
-            document.getElementById('sodium').textContent = `Sodium: ${sodium.toFixed(2)} g`;
-            document.getElementById('fiber').textContent = `Fiber: ${fiber.toFixed(2)} g`;
+            document.getElementById('energy').textContent = `Energija: ${totalEnergy.toFixed(2)} kJ`;
+            document.getElementById('protein').textContent = `Beljakovine: ${protein.toFixed(2)} g`;
+            document.getElementById('fat').textContent = `Maščobe: ${fat.toFixed(2)} g`;
+            document.getElementById('saturated-fat').textContent = `Nasičene Maščobe: ${saturatedFat.toFixed(2)} g`;
+            document.getElementById('carbs').textContent = `Ogljikovi Hidrati: ${carbs.toFixed(2)} g`;
+            document.getElementById('sugar').textContent = `Sladkor: ${sugar.toFixed(2)} g`;
+            document.getElementById('sodium').textContent = `Natrij: ${sodium.toFixed(2)} g`;
+            document.getElementById('fiber').textContent = `Prehranska Vlaknina: ${fiber.toFixed(2)} g`;
     
             document.getElementById('results').style.display = 'block';
     
@@ -349,7 +352,7 @@ p{
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Protein', 'Fat', 'Carbs', 'Sugar', 'Fiber'],
+                    labels: ['Beljakovine', 'Maščobe', 'Ogljikovi Hidrati', 'Sladkor', 'Prehranska Vlaknina'],
                     datasets: [{
                         data: [protein, fat, carbs, sugar, fiber],
                         backgroundColor: ['#4caf50', '#ff5722', '#2196f3', '#ffc107', '#9c27b0']
@@ -379,13 +382,13 @@ p{
             const healthStatus = document.getElementById('health-status');
             // Updated health level categorization with clear low and high BMI ranges
             if (bmi < 18.5) {
-                healthStatus.textContent = 'Low health level (Underweight)';
+                healthStatus.textContent = 'Nizka stopnja zdravja (premajhna teža)';
             } else if (bmi >= 18.5 && bmi < 25) {
-                healthStatus.textContent = 'High health level (Normal weight)';
+                healthStatus.textContent = 'Visoka stopnja zdravja (normalna teža)';
             } else if (bmi >= 25 && bmi < 30) {
-                healthStatus.textContent = 'Medium health level (Overweight)';
+                healthStatus.textContent = 'Srednja stopnja zdravja (prekomerna teža)';
             } else {
-                healthStatus.textContent = 'Low health level (Obese)';
+                healthStatus.textContent = 'Nizka stopnja zdravja (debelost)';
             }
         }
     </script>
