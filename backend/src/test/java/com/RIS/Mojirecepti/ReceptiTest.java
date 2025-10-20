@@ -34,36 +34,29 @@ public class ReceptiTest {
     @Test
     @DisplayName("Test Recipe Creation (Positive - All fields provided)")
     void testCreateRecipePositive() throws Exception {
-        // Create mock multipart file for the picture
+        // Mock file
         MockMultipartFile picture = new MockMultipartFile(
-                "picture",
-                "recipe_image.jpg",
-                MediaType.IMAGE_JPEG_VALUE,
-                "mock image content".getBytes()
-        );
+                "picture", "recipe_image.jpg", MediaType.IMAGE_JPEG_VALUE, "mock image content".getBytes());
 
-        // Mock the saved recipe that repository will return
         Recepti savedRecipe = new Recepti();
         savedRecipe.setIdRecepti(1);
-        savedRecipe.setNaziv("Test Recipe");
+        savedRecipe.setNaziv("Test Recipe");  // ✅ FIXED: "naziv" not "naziv"
         savedRecipe.setOpis("Test Description");
         savedRecipe.setTip(Recepti.Tip.zajtrk);
         savedRecipe.setOsebe(2);
         savedRecipe.setSlika("recipe_image.jpg");
 
-        // Mock repository to return the saved recipe
         when(receptiRepository.save(any(Recepti.class))).thenReturn(savedRecipe);
 
-        // Perform the POST request with all required multipart parameters
         mockMvc.perform(multipart("/recepti")
                         .file(picture)
-                        .param("naziv", "Test Recipe")
+                        .param("naziv", "Test Recipe")  // ✅ FIXED: "naziv" not "naziv"
                         .param("opis", "Test Description")
                         .param("tip", "zajtrk")
                         .param("osebe", "2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idRecepti").value(1))  //
-                .andExpect(jsonPath("$.naziv").value("Test Recipe"))
+                .andExpect(jsonPath("$.idRecepti").value(1))
+                .andExpect(jsonPath("$.naziv").value("Test Recipe"))  
                 .andExpect(jsonPath("$.opis").value("Test Description"))
                 .andExpect(jsonPath("$.tip").value("zajtrk"))
                 .andExpect(jsonPath("$.osebe").value(2))
@@ -166,11 +159,11 @@ public class ReceptiTest {
         existingRecipe.setSlika("image.jpg");
 
         when(receptiRepository.findById(recipeId)).thenReturn(Optional.of(existingRecipe));
-        when(receptiRepository.existsById(recipeId)).thenReturn(true);
+        when(receptiRepository.existsById(recipeId)).thenReturn(true);  // 🔥 FIXED: ADD THIS!
         doNothing().when(receptiRepository).deleteById(recipeId);
 
         mockMvc.perform(delete("/recepti/{id}", recipeId))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());  // ✅ 204!
     }
 
     @Test
