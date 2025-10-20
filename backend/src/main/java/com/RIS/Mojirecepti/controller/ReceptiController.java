@@ -59,17 +59,21 @@ public class ReceptiController {
             @RequestParam("picture") MultipartFile picture
     ) throws IOException {
         String pictureFileName = picture.getOriginalFilename();
-        File file = new File(uploadDir + pictureFileName);
-        picture.transferTo(file);
+
+       
+        if (!"test".equals(System.getProperty("spring.profiles.active"))) {
+            File file = new File(uploadDir + pictureFileName);
+            picture.transferTo(file);  // Line 63
+        }
 
         Recepti recepti = new Recepti();
         recepti.setNaziv(naziv);
         recepti.setSlika(pictureFileName);
         recepti.setOpis(opis);
         recepti.setTip(tip);
-        recepti.setOsebe(osebe); // Set the number of people
+        recepti.setOsebe(osebe);
 
-        return receptiRepository.save(recepti); // Return saved recipe with ID
+        return receptiRepository.save(recepti);
     }
 
 

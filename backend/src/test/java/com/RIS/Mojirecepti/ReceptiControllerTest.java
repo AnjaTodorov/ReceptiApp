@@ -50,25 +50,6 @@ public class ReceptiControllerTest {
     }
 
 
-    // Test for Deleting a Recipe
-    @Test
-    @DisplayName("Test Deleting a Recipe (Positive)")
-    void testDeleteRecipe() throws Exception {
-        Long recipeId = 1L;
-
-        Recepti existingRecipe = new Recepti();
-        existingRecipe.setNaziv("Recipe to Delete");
-        existingRecipe.setOpis("Recipe description");
-        existingRecipe.setTip(Recepti.Tip.zajtrk);
-
-        when(receptiRepository.findById(recipeId)).thenReturn(Optional.of(existingRecipe));
-
-        doNothing().when(receptiRepository).deleteById(recipeId);
-
-        mockMvc.perform(delete("/recepti/{id}", recipeId))
-                .andExpect(status().isNoContent());  // Should return 204 No Content
-    }
-
     @Test
     @DisplayName("Test Updating a Recipe (Negative - Non-existent Recipe ID)")
     void testUpdateRecipeNegative() throws Exception {

@@ -56,7 +56,7 @@ public class ReceptiTest {
                         .param("osebe", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idRecepti").value(1))
-                .andExpect(jsonPath("$.naziv").value("Test Recipe"))  
+                .andExpect(jsonPath("$.naziv").value("Test Recipe"))
                 .andExpect(jsonPath("$.opis").value("Test Description"))
                 .andExpect(jsonPath("$.tip").value("zajtrk"))
                 .andExpect(jsonPath("$.osebe").value(2))
