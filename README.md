@@ -364,25 +364,27 @@ Kontrolerji izvajajo poslovno logiko aplikacije, obravnavajo zahteve in komunici
 
 Pri razvoju aplikacije "Moji recepti" upoštevamo določene standarde kodiranja, da zagotovimo berljivost, vzdržljivost in kakovost kode. Ti standardi vključujejo:
 
-1. **Imenovanje spremenljivk in funkcij**:
-   - Uporabljajte opisna imena, ki jasno označujejo namen spremenljivke ali funkcije.
-   - Uporabite konvencije imenovanja (camelCase za spremenljivke in funkcije, PascalCase za razrede).
+1. **Imenovanje razredov, atributov in metod**:
+   - **Razredi**: Začnite z veliko začetnico in uporabite PascalCase.  
+   - **Atributi**: Začnite z malo začetnico in uporabite camelCase.  
+   - **Metode**: Začnite z malo začetnico in uporabite camelCase; getterji/setterji naj začnejo z `get`/`set` in prvo črko imena atributa veliko.  
 
 2. **Komentiranje kode**:
-   - Dodajte komentarje, kjer je to potrebno, da pojasnite zapletene dele kode.
+   - Dodajte komentarje, kjer je to potrebno, da pojasnite kompleksne dele kode.
 
 3. **Struktura kode**:
-   - Organizirajte kodo v logične enote in mape (npr. po funkcionalnostih).
+   - Organizirajte kodo v logične enote in mape, npr. po funkcionalnostih ali slojih:
+     - `controller/` – razredi za upravljanje zahtevkov HTTP
+     - `service/` – poslovna logika
+     - `repository/` – dostop do baze podatkov
+     - `entity/` – entitete baze podatkov
+     - `dto/` – objekti za prenos podatkov
 
-4. **Preverjanje napak**:
-   - Implementirajte ustrezno obravnavo napak in izjem.
-   - Uporabite enote testiranja za preverjanje funkcionalnosti kode.
-
-5. **Verzijski nadzor**:
+4. **Verzijski nadzor**:
    - Redno posodabljajte in dokumentirajte spremembe v Git repozitoriju.
-   - Uporabljajte smiselne sporočila za commit.
+   - Uporabljajte smiselna in opisna sporočila za commit.
 
-Z upoštevanjem teh standardov kodiranja želimo olajšati sodelovanje v projektu in zagotavljati visoko kakovost programske opreme.
+S temi standardi želimo zagotoviti **dosledno strukturo kode**, olajšati **sodelovanje v projektu** in ohraniti **visoko kakovost programske opreme**.
 
 ## 🌐 Končne točke REST API
 
@@ -499,12 +501,24 @@ SET FOREIGN_KEY_CHECKS=1;
 
 
 ```
+#### ⚠️ Nastavitev poti za shranjevanje slik
+Ko v aplikaciji ustvarjate nov recept s sliko, se slika shrani lokalno.
+Zato morate v datoteki
+```backend/src/main/java/com/RIS/Mojirecepti/controller/ReceptiController.java```
+spremeniti naslednjo vrstico:
+```java
+private final String uploadDir = "/RIS/ReceptiApp/frontend/sliki/";
+```
+➡️ Zamenjajte pot z dejansko potjo do vaše mape 
+```frontend/sliki/ ```
+v vašem računalniku.
+Če tega ne spremenite, shranjevanje slik in aplikacija ne bosta delovala pravilno.
 ### Povezava Spring Boot z MySQL
 V vaši aplikaciji dodajte naslednje nastavitve v datoteko application.properties:
 ```bash
 spring.application.name=Moji-recepti
 spring.datasource.url=jdbc:mysql://localhost:3306/ReceptiDB
-spring.datasource.username=root
+spring.datasource.username=root # # Privzeto uporabniško ime (spremenite, če uporabljate drugega)
 spring.datasource.password= # Spremenite na vaš dejanski geslo
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -523,12 +537,16 @@ Začnite backend
 ```bash
 mvn spring-boot:run
 ```
-Zagon frontend-a
+### Zagon frontend-a
 
 Začnite razvojni strežnik frontend-a:
 ```bash
 node server.js
 ```
+### ✅ Po uspešnem zagonu
+
+- **Backend** teče na naslovu: [http://localhost:8080](http://localhost:8080)  
+- **Frontend** teče na naslovu: [http://localhost:3000](http://localhost:3000)
 
 ## 👤 Avtorji
 
