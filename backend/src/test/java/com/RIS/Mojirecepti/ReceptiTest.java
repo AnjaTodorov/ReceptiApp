@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ReceptiController.class)
+@ActiveProfiles("test")
 public class ReceptiTest {
 
     @Autowired
@@ -34,13 +36,12 @@ public class ReceptiTest {
     @Test
     @DisplayName("Test Recipe Creation (Positive - All fields provided)")
     void testCreateRecipePositive() throws Exception {
-        // Mock file
         MockMultipartFile picture = new MockMultipartFile(
                 "picture", "recipe_image.jpg", MediaType.IMAGE_JPEG_VALUE, "mock image content".getBytes());
 
         Recepti savedRecipe = new Recepti();
         savedRecipe.setIdRecepti(1);
-        savedRecipe.setNaziv("Test Recipe");  // ✅ FIXED: "naziv" not "naziv"
+        savedRecipe.setNaziv("Test Recipe");
         savedRecipe.setOpis("Test Description");
         savedRecipe.setTip(Recepti.Tip.zajtrk);
         savedRecipe.setOsebe(2);
@@ -50,7 +51,7 @@ public class ReceptiTest {
 
         mockMvc.perform(multipart("/recepti")
                         .file(picture)
-                        .param("naziv", "Test Recipe")  // ✅ FIXED: "naziv" not "naziv"
+                        .param("naziv", "Test Recipe")
                         .param("opis", "Test Description")
                         .param("tip", "zajtrk")
                         .param("osebe", "2"))

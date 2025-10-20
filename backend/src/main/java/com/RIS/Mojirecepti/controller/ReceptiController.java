@@ -60,7 +60,7 @@ public class ReceptiController {
     ) throws IOException {
         String pictureFileName = picture.getOriginalFilename();
 
-       
+
         if (!"test".equals(System.getProperty("spring.profiles.active"))) {
             File file = new File(uploadDir + pictureFileName);
             picture.transferTo(file);  // Line 63
