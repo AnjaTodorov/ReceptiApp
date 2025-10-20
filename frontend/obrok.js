@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                 });
             } else {
-                mealPlansContainer.innerHTML = '<p>No meal plans available.</p>';
+                //mealPlansContainer.innerHTML = '<p>Ni na voljo načrtov obrokov.</p>';
             }
         } catch (error) {
             console.error('Error fetching meal plans:', error);
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const createdMealPlan = await response.json(); // Get the response with the generated ID
-                alert(`Meal plan created successfully! ID: ${createdMealPlan.idNacrtObrokov}`);
+                //alert(`Meal plan created successfully! ID: ${createdMealPlan.idNacrtObrokov}`);
                 form.reset();
                 [breakfastDiv, lunchDiv, dinnerDiv].forEach((container) => {
                     container.querySelectorAll('.recipe-item').forEach((item) => item.classList.remove('selected'));

@@ -95,8 +95,9 @@ public class ReceptiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecept(@PathVariable Long id) {
-        receptiRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Recept not found with id: " + id));
+        if (!receptiRepository.existsById(id)) {  //
+            return ResponseEntity.notFound().build();
+        }
         receptiRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
