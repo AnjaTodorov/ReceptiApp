@@ -60,10 +60,13 @@ public class ReceptiController {
     ) throws IOException {
         String pictureFileName = picture.getOriginalFilename();
 
+        // ✅ Only save file if NOT running in test or if directory exists
+        String activeProfile = System.getProperty("spring.profiles.active");
+        File directory = new File(uploadDir);
 
-        if (!"test".equals(System.getProperty("spring.profiles.active"))) {
-            File file = new File(uploadDir + pictureFileName);
-            picture.transferTo(file);  // Line 63
+        if ((activeProfile == null || !activeProfile.equals("test")) && directory.exists()) {
+            File file = new File(directory, pictureFileName);
+            picture.transferTo(file);
         }
 
         Recepti recepti = new Recepti();
