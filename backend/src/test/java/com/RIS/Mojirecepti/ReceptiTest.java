@@ -76,7 +76,7 @@ public class ReceptiTest {
                         .param("opis", "Test Description")  // NO naziv!
                         .param("tip", "zajtrk")
                         .param("osebe", "2"))
-                .andExpect(status().isBadRequest()); // ✅ TRUE 400!
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ReceptiTest {
 
         // Existing recipe mock
         Recepti existingRecipe = new Recepti();
-        existingRecipe.setIdRecepti(1);  // ✅ int for entity field
+        existingRecipe.setIdRecepti(1);
         existingRecipe.setNaziv("Old Recipe");
         existingRecipe.setOpis("Old Description");
         existingRecipe.setTip(Recepti.Tip.zajtrk);
