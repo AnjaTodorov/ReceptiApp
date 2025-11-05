@@ -7,16 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.RIS.Mojirecepti.entity.Recepti;
@@ -50,34 +41,33 @@ public class ReceptiController {
         return receptiRepository.findByTip(tip);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public Recepti createRecept(
             @RequestParam("naziv") String naziv,
             @RequestParam("opis") String opis,
-            @RequestParam("tip") Recepti.Tip tip,
+            @RequestParam("tip") String tipString,
             @RequestParam("osebe") int osebe,
             @RequestParam("picture") MultipartFile picture
     ) throws IOException {
+
+        Recepti.Tip tip = Recepti.Tip.valueOf(tipString.trim().toLowerCase());
+
         String pictureFileName = picture.getOriginalFilename();
-
-        // ✅ Only save file if NOT running in test or if directory exists
-        String activeProfile = System.getProperty("spring.profiles.active");
         File directory = new File(uploadDir);
-
-        if ((activeProfile == null || !activeProfile.equals("test")) && directory.exists()) {
-            File file = new File(directory, pictureFileName);
-            picture.transferTo(file);
+        if (directory.exists()) {
+            picture.transferTo(new File(directory, pictureFileName));
         }
 
         Recepti recepti = new Recepti();
         recepti.setNaziv(naziv);
-        recepti.setSlika(pictureFileName);
         recepti.setOpis(opis);
         recepti.setTip(tip);
         recepti.setOsebe(osebe);
+        recepti.setSlika(pictureFileName);
 
         return receptiRepository.save(recepti);
     }
+
 
 
 
