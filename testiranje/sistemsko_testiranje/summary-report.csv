@@ -1,0 +1,5 @@
+Test,# Samples,Average (ms),Min (ms),Max (ms),Std Dev,Error %,Throughput (req/s),Avg Bytes
+Baseline,45,34,19,51,7.68,0.00,0.197,356.9
+Moderate,300,27,15,48,6.33,0.00,15.09,357.7
+Heavy Load,1000,28,15,1632,52.18,0.001,31.57,357.887
+Extreme Load,1500,28,16,105,7.38,0.031,60.52,357.7
