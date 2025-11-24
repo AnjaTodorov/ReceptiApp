@@ -123,8 +123,8 @@ recipeForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const formData = new FormData(recipeForm);
-    const tip = document.getElementById("tip").value;
-    formData.append("tip", tip);
+    //const tip = document.getElementById("tip").value;
+    //formData.append("tip", tip);
 
     // Extract and parse the ingredients from the hidden input
     const hiddenIngredients = document.getElementById("hiddenIngredients").value;
