@@ -55,7 +55,8 @@ Preveriti, ali sistem omogoča pravilno ustvarjanje recepta skupaj s slikami, se
 
 ### Rezultat:
 Test uspešno opravljen.
-Status: 🟢 Test OK
+
+Status: 🟢 TS001_CreateRecipe 
 
 ![TS001-1](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_1.png)
 ![TS001-2](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_2.png)
@@ -75,7 +76,8 @@ Preveriti ustvarjanje jedilnika za izbran datum brez podvajanja in z vsemi tremi
 
 ### Rezultat:
 Test uspešno opravljen.
-Status: 🟢 Test OK
+
+Status: 🟢 TS002_CreateMealPlan 
 
 ![TS002-1](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_3.png)  
 ![TS002-2](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_4.png)  
@@ -97,7 +99,8 @@ Preveriti matematično pravilnost preračuna vrednosti ob spremembi števila por
 
 ### Rezultat:
 Test uspešno opravljen.
-Status: 🟢 Test OK
+
+Status: 🟢 TS0003_RecalculateServings
 
 ![TS003-1](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_6.png)  
 ![TS003-2](https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/6_7.png)  
