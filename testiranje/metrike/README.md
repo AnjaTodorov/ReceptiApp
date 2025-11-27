@@ -52,8 +52,8 @@ Oba dodatka omogočata analizo *samo produkcijske kode* (`src/main/java`), kar j
 | Method Inheritance Factor (MIF) | **0 %** |
 | Polymorphism Factor (PF) | **100 %** |
 
-<p align="center">
-<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7.1.png" width="50%">
+<p align="left">
+<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7_1.png" width="50%">
 </p>
 
 ---
@@ -121,12 +121,12 @@ Oba dodatka omogočata analizo *samo produkcijske kode* (`src/main/java`), kar j
 | RFC – Response for a Class | 9.59 |
 | WMC – Weighted Methods per Class | 6.04 |
 
-<p align="center">
-<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7.2.png" width="50%">
+<p align="left">
+<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7_2.png" width="50%">
 </p>
 
-<p align="center">
-<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7.3.png" width="50%">
+<p align="left">
+<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7_3.png" width="50%">
 </p>
 
 
@@ -184,7 +184,7 @@ Dodani graf prikazuje porazdelitev metrik glede na razrede. Analiza:
 ---
 
 <p align="center">
-<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7.4.png" width="50%">
+<img src="https://github.com/AnjaTodorov/ReceptiApp/blob/main/frontend/sliki/7_4.png" width="65%">
 </p>
 
 
