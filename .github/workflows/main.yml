@@ -102,7 +102,7 @@ jobs:
           mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=com.ris:Moji-recepti \
             -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=sqp_5e363f669b2c28751516d81b6ec0639f0c172cba
         working-directory: ./backend
 
   build-frontend:
