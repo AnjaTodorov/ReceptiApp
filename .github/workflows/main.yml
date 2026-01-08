@@ -63,16 +63,17 @@ jobs:
     needs: build-backend
     services:
       sonarqube:
-        image: sonarqube:latest
+        image: sonarqube:10.4.1-community  # Use specific version
         options: >-
           --health-cmd="curl -f http://localhost:9000 || exit 1"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
-        ports:
-          - 9000:9000
+          --health-retries=30
         env:
           SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+          SONAR_FORCEAUTHENTICATION: false  # Allow unauthenticated access initially
+        ports:
+          - 9000:9000
 
     steps:
       - name: Checkout code
@@ -95,23 +96,92 @@ jobs:
       - name: Wait for SonarQube
         run: |
           echo "Waiting for SonarQube to be ready..."
-          # Increased wait time and retries for SonarQube startup
-          for i in {1..60}; do
-            if curl -s -f -u admin:admin http://localhost:9000/api/server/version > /dev/null; then
-              echo "SonarQube is ready!"
+          # Wait longer for SonarQube to fully start
+          for i in {1..90}; do
+            if curl -s -f http://localhost:9000/api/system/status | grep -q '"status":"UP"'; then
+              echo "SonarQube is ready and UP!"
               break
             fi
-            echo "Waiting for SonarQube to start... ($i/60)"
-            sleep 5
+            echo "Waiting for SonarQube to start... ($i/90)"
+            sleep 10
           done
+          
+          # Additional wait to ensure fully initialized
+          sleep 30
+
+      - name: Setup SonarQube Authentication
+        run: |
+          # First, check if we can access without authentication
+          echo "Testing SonarQube access..."
+          
+          # Try to get version without auth
+          VERSION=$(curl -s http://localhost:9000/api/server/version || echo "failed")
+          echo "SonarQube version: $VERSION"
+          
+          # Generate a token for analysis
+          echo "Generating SonarQube token..."
+          
+          # Try to generate token with default admin password
+          TOKEN_RESPONSE=$(curl -s -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "name=github-action-$(date +%s)" || echo "token_failed")
+          
+          if echo "$TOKEN_RESPONSE" | grep -q "token"; then
+            # Extract token from JSON response
+            SONAR_TOKEN=$(echo "$TOKEN_RESPONSE" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+            echo "Generated token successfully"
+            echo "SONAR_TOKEN=$SONAR_TOKEN" >> $GITHUB_ENV
+          else
+            # If token generation fails, try to disable authentication temporarily
+            echo "Failed to generate token, checking authentication requirements..."
+            
+            # Check if authentication is forced
+            AUTH_STATUS=$(curl -s http://localhost:9000/api/authentication/validate | grep -o '"forceAuthentication":[^,]*' | cut -d':' -f2)
+            
+            if [ "$AUTH_STATUS" = "false" ]; then
+              echo "Authentication not forced, proceeding without token"
+              echo "SONAR_TOKEN=" >> $GITHUB_ENV
+            else
+              # Try to create a user for analysis
+              echo "Creating analysis user..."
+              curl -s -u admin:admin -X POST "http://localhost:9000/api/users/create" \
+                -H "Content-Type: application/x-www-form-urlencoded" \
+                -d "login=analysis" \
+                -d "name=Analysis User" \
+                -d "password=analysis123" || true
+              
+              # Generate token for the new user
+              TOKEN_RESPONSE=$(curl -s -u analysis:analysis123 -X POST "http://localhost:9000/api/user_tokens/generate" \
+                -H "Content-Type: application/x-www-form-urlencoded" \
+                -d "name=github-action" || echo "token_failed2")
+                
+              if echo "$TOKEN_RESPONSE" | grep -q "token"; then
+                SONAR_TOKEN=$(echo "$TOKEN_RESPONSE" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+                echo "Generated token for analysis user"
+                echo "SONAR_TOKEN=$SONAR_TOKEN" >> $GITHUB_ENV
+              else
+                echo "WARNING: Could not generate token, analysis may fail"
+                echo "SONAR_TOKEN=" >> $GITHUB_ENV
+              fi
+            fi
+          fi
+          
+          echo "Authentication setup complete"
 
       - name: Run SonarQube Analysis
         run: |
-          mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=com.ris:Moji-recepti \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=admin \
-            -Dsonar.password=admin
+          if [ -n "${{ env.SONAR_TOKEN }}" ]; then
+            echo "Running analysis with token authentication"
+            mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
+              -Dsonar.projectKey=com.ris:Moji-recepti \
+              -Dsonar.host.url=http://localhost:9000 \
+              -Dsonar.token=${{ env.SONAR_TOKEN }}
+          else
+            echo "Running analysis without authentication"
+            mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
+              -Dsonar.projectKey=com.ris:Moji-recepti \
+              -Dsonar.host.url=http://localhost:9000
+          fi
         working-directory: ./backend
 
   build-frontend:
@@ -183,4 +253,3 @@ jobs:
       - name: Run Unit Tests
         run: mvn test --no-transfer-progress
         working-directory: ./backend
-
